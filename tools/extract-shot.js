@@ -12,6 +12,8 @@ for (const f of files) {
   let chunk = m[1].trim();
   // 去掉可能的引号包裹
   chunk = chunk.replace(/^"|"$/g, '');
+  // 去掉 data URL 前缀
+  chunk = chunk.replace(/^data:image\/png;base64,/, '');
   b64 += chunk;
 }
 fs.writeFileSync(out, Buffer.from(b64, 'base64'));
