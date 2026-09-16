@@ -91,7 +91,7 @@ function resize(){
   cv.style.width=W+'px';cv.style.height=H+'px';
   ctx.setTransform(dpr,0,0,dpr,0,0);
   cx=W/2;cy=H/2;
-  R=Math.min(W*0.44,H*0.28);
+  R=Math.min(W*0.31,H*0.26);
   lx=cx-R/2;rx=cx+R/2;
   gy=Math.sqrt(3)/2*R;
   stars=[];
@@ -102,7 +102,12 @@ function clampLevel(i){return Math.max(0,Math.min(i,Math.min(LEVELS.length-1,pro
 function loadLevel(i){
   lvlIdx=clampLevel(i);
   const L=LEVELS[lvlIdx];
-  balls=L.balls.map(b=>({color:b.color,pos:b.pos.slice()}));
+  balls=L.balls.map(b=>{
+    const nb={color:b.color,pos:b.pos.slice(),renderX:null,renderY:null,animFromX:null,animFromY:null,animStart:0,following:false};
+    const xy=ballXY(nb);
+    if(xy){nb.renderX=xy[0];nb.renderY=xy[1];nb.animFromX=xy[0];nb.animFromY=xy[1];}
+    return nb;
+  });
   targets=L.targets;
   steps=0;won=false;drag=null;visual=0;winTime=0;
   document.getElementById('win').style.display='none';
@@ -173,8 +178,15 @@ function checkWin(){
 function ringXY(c){return c===0?lx:rx;}
 function slotXY(c,s){const a=s*STEP*Math.PI/180;return[ringXY(c)+R*Math.cos(a),cy+R*Math.sin(a)];}
 function ballXY(b){for(let c=0;c<2;c++)if(b.pos[c]!==null)return slotXY(c,b.pos[c]);return null;}
+function targetXY(b){
+  if(drag&&b.pos[drag.ci]!==null){
+    const a=(b.pos[drag.ci]+visual)*STEP*Math.PI/180;
+    return[ringXY(drag.ci)+R*Math.cos(a),cy+R*Math.sin(a)];
+  }
+  return ballXY(b);
+}
 function drawBall(x,y,color,alpha,isInt,scale){
-  const r=R*.055*(scale||1),col=COLORS[color].fill,rgb=COLORS[color].rgb;
+  const r=R*.06*(scale||1),col=COLORS[color].fill,rgb=COLORS[color].rgb;
   ctx.globalAlpha=alpha;
   const g=ctx.createRadialGradient(x,y,0,x,y,r*2.2);
   g.addColorStop(0,'rgba('+rgb+',.3)');g.addColorStop(1,'rgba('+rgb+',0)');
@@ -205,18 +217,36 @@ function draw(){
   for(const t of targets){
     const[x,y]=slotXY(t.ring,t.slot);
     ctx.setLineDash([4,4]);
-    ctx.beginPath();ctx.arc(x,y,R*.055,0,7);
+    ctx.beginPath();ctx.arc(x,y,R*.06,0,7);
     ctx.strokeStyle=COLORS[t.color].fill;ctx.lineWidth=2;ctx.stroke();
     ctx.setLineDash([]);
     ctx.beginPath();ctx.arc(x,y,2,0,7);ctx.fillStyle=COLORS[t.color].fill+'99';ctx.fill();
   }
   const wonPulse=won?0.5+0.5*Math.sin((performance.now()-winTime)/300):0;
   const wonScale=won?1+0.08*wonPulse:1;
+  const now=performance.now();
   for(const b of balls){
-    const[x,y]=ballXY(b);if(x===undefined)continue;
     const isInt=b.pos[0]!==null&&b.pos[1]!==null;
     const moving=drag&&b.pos[drag.ci]!==null;
     const alpha=(drag&&!moving)?0.4:1;
+    let x,y;
+    if(moving){
+      const t=targetXY(b);
+      x=t[0];y=t[1];
+      b.renderX=x;b.renderY=y;b.following=true;
+    }else{
+      if(b.following){b.animFromX=b.renderX;b.animFromY=b.renderY;b.animStart=now;b.following=false;}
+      const t=ballXY(b);if(!t)continue;
+      const tx=t[0],ty=t[1];
+      if(b.renderX===null){b.renderX=tx;b.renderY=ty;b.animFromX=tx;b.animFromY=ty;}
+      if(b.animFromX===null){b.animFromX=b.renderX;b.animFromY=b.renderY;b.animStart=now;}
+      const el=now-b.animStart;
+      const k=el>=150?1:1-Math.pow(1-el/150,3);
+      x=b.animFromX+(tx-b.animFromX)*k;
+      y=b.animFromY+(ty-b.animFromY)*k;
+      b.renderX=x;b.renderY=y;
+      if(k>=1){b.renderX=tx;b.renderY=ty;}
+    }
     drawBall(x,y,b.color,alpha,isInt,wonScale);
   }
   if(won){
