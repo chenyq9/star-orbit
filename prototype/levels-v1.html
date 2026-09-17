@@ -410,12 +410,13 @@ function performHint(kind,res){
   }
 }
 function requestHint(kind){
-  if(hintBlocked())return;
+  if(won)return;
   if(hintQuota[kind]>0){
     const res=solveHint();
     if(res.status!=='ok'){toast(res.status==='solved'?'盘面已达成':'当前盘面无解');return;}
     hintQuota[kind]--;updateHintBadge();
     closeHintPanel();
+    if(kind==='h3'&&performance.now()<h3LockUntil){hintQuota[kind]++;updateHintBadge();toast('等旋转完成');return;}
     performHint(kind,res);
     return;
   }
