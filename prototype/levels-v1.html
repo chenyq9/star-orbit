@@ -28,6 +28,29 @@ canvas{display:block;touch-action:none}
 #wininfo{font-size:14px;color:rgba(180,200,255,.7);margin-bottom:6px}
 #winsub{font-size:12px;color:rgba(180,200,255,.5)}
 #best{position:fixed;bottom:12px;left:0;right:0;text-align:center;color:rgba(180,200,255,.35);font-size:11px;letter-spacing:1px;pointer-events:none;z-index:10}
+#hintBtn{position:fixed;right:14px;bottom:44px;width:46px;height:46px;border-radius:50%;background:rgba(20,24,48,.82);border:1px solid rgba(208,168,255,.4);color:#e8dcff;font-size:22px;display:flex;align-items:center;justify-content:center;z-index:16;cursor:pointer;box-shadow:0 0 14px rgba(208,168,255,.25)}
+#hintBadge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:8px;background:#8a6cff;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0 3px}
+#hintBadge.zero{background:rgba(120,130,160,.5)}
+#hintPanel{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:rgba(4,6,16,.45);z-index:30}
+#hintPanelCard{width:100%;max-width:420px;background:rgba(14,16,34,.96);border-top:1px solid rgba(208,168,255,.25);border-radius:18px 18px 0 0;padding:14px 14px calc(14px + env(safe-area-inset-bottom));box-sizing:border-box}
+.hpTitle{color:#dfe8ff;font-size:15px;letter-spacing:2px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.hpClose{color:rgba(180,200,255,.5);font-size:13px;cursor:pointer;padding:2px 8px}
+.hintCard{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(140,150,200,.18);border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer}
+.hintCard:active{background:rgba(255,255,255,.08)}
+.hcIcon{width:34px;height:34px;border-radius:50%;background:rgba(138,108,255,.18);border:1px solid rgba(138,108,255,.4);color:#cbb8ff;font-size:16px;display:flex;align-items:center;justify-content:center;flex:none}
+.hcText{flex:1;color:#dfe8ff;font-size:13px}
+.hcText b{display:block;font-size:14px;letter-spacing:1px}
+.hcText small{color:rgba(180,200,255,.55);font-size:11px}
+.hcN{color:#8a6cff;font-size:18px;font-weight:700;min-width:22px;text-align:right}
+.hcN.zero{color:rgba(140,150,180,.4);font-size:13px}
+#adMock{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(4,6,16,.6);z-index:40}
+#adCard{width:78%;max-width:320px;background:rgba(16,18,38,.98);border:1px solid rgba(208,168,255,.3);border-radius:16px;padding:22px 18px;text-align:center}
+.adTitle{color:#ffd76a;font-size:16px;letter-spacing:2px;margin-bottom:8px}
+.adSub{color:rgba(180,200,255,.6);font-size:12px;line-height:1.6;margin-bottom:16px}
+#adOk{background:linear-gradient(135deg,#8a6cff,#6a4fe0);color:#fff;border-radius:10px;padding:11px;font-size:14px;letter-spacing:1px;cursor:pointer;margin-bottom:10px}
+#adNo{color:rgba(180,200,255,.5);font-size:12px;cursor:pointer;padding:6px}
+#toast{position:fixed;left:50%;top:70px;transform:translateX(-50%) translateY(-8px);background:rgba(16,18,38,.92);border:1px solid rgba(208,168,255,.3);color:#dfe8ff;font-size:12px;letter-spacing:1px;padding:8px 16px;border-radius:20px;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -43,6 +66,24 @@ canvas{display:block;touch-action:none}
   <div id='winsub'>点击进入下一关</div>
 </div>
 <div id='best'></div>
+<div id='hintBtn'>💡<span id='hintBadge'></span></div>
+<div id='hintPanel'>
+  <div id='hintPanelCard'>
+    <div class='hpTitle'>提示<span class='hpClose'>✕</span></div>
+    <div class='hintCard' id='hc1'><span class='hcIcon'>◎</span><span class='hcText'><b>轨道指引</b><small>高亮应该旋转的轨道（不给方向）</small></span><span class='hcN' id='hc1n'></span></div>
+    <div class='hintCard' id='hc2'><span class='hcIcon'>➤</span><span class='hcText'><b>轨道 + 方向</b><small>在高亮轨道上显示旋转方向箭头</small></span><span class='hcN' id='hc2n'></span></div>
+    <div class='hintCard' id='hc3'><span class='hcIcon'>▶</span><span class='hcText'><b>自动执行</b><small>自动完成下一步旋转（计入步数）</small></span><span class='hcN' id='hc3n'></span></div>
+  </div>
+</div>
+<div id='adMock'>
+  <div id='adCard'>
+    <div class='adTitle'>提示已用完</div>
+    <div class='adSub'>观看激励视频广告可恢复本档提示次数<br>（TapTap SDK 接入后生效，当前为模拟）</div>
+    <div id='adOk'>▶ 模拟看完广告</div>
+    <div id='adNo'>暂不需要</div>
+  </div>
+</div>
+<div id='toast'></div>
 <script>
 /* Star Orbit 试玩包 v1.1
    = 教学关卡 v1 引擎 + 最优步数对比 + 三星评价 + 进度存档 + 通关动画
@@ -111,7 +152,8 @@ function loadLevel(i){
   targets=L.targets;
   steps=0;won=false;drag=null;visual=0;winTime=0;
   document.getElementById('win').style.display='none';
-  updateHud();updateNav();
+  closeHintPanel();document.getElementById('adMock').style.display='none';
+  updateHud();updateNav();resetHint();
 }
 function updateHud(){
   const L=LEVELS[lvlIdx];
@@ -214,6 +256,7 @@ function draw(){
     ctx.beginPath();ctx.arc(x,y,R*.08,0,7);
     ctx.strokeStyle='rgba(208,168,255,.3)';ctx.lineWidth=1.5;ctx.stroke();
   });
+  drawHintFx(performance.now());
   for(const t of targets){
     const[x,y]=slotXY(t.ring,t.slot);
     ctx.setLineDash([4,4]);
@@ -258,9 +301,202 @@ function draw(){
     }
   }
 }
+/* ---- 提示系统 v1.2（solver 泛化抽象，为三轨预留） ---- */
+const RING_COUNT=2;
+const HintConfig={
+  quota:{h1:3,h2:2,h3:1},
+  fxDuration:4200,
+  h3LockMs:170
+};
+function buildLevelDef(){
+  const rings=[];
+  for(let c=0;c<RING_COUNT;c++){
+    const gates={};
+    for(let s=0;s<SLOTS;s++){
+      const g=gatePartner(c,s);
+      if(g!==null)gates[s]=[{ring:1-c,slot:g}];
+    }
+    rings.push({slots:SLOTS,gates});
+  }
+  return {rings,balls:balls.map(b=>({color:b.color,pos:b.pos.slice()})),targets:targets};
+}
+function genSim(def,state,ci,dir){
+  const sim=state.map(p=>p.slice());
+  const S=def.rings[ci].slots;
+  for(const p of sim){if(p[ci]!==null)p[ci]=(p[ci]+dir+S)%S;}
+  for(const p of sim){
+    if(p[ci]===null)continue;
+    const gates=def.rings[ci].gates[p[ci]];
+    const keep={};keep[ci]=p[ci];
+    if(gates)for(const g of gates)keep[g.ring]=g.slot;
+    for(let r=0;r<def.rings.length;r++)p[r]=(r in keep)?keep[r]:null;
+  }
+  return sim;
+}
+function genDup(def,sim){
+  for(let c=0;c<def.rings.length;c++){
+    const seen=new Set();
+    for(const p of sim){if(p[c]===null)continue;if(seen.has(p[c]))return true;seen.add(p[c]);}
+  }
+  return false;
+}
+function genWin(def,state){
+  return def.targets.every(t=>def.balls.some((b,i)=>b.color===t.color&&state[i][t.ring]===t.slot));
+}
+function solveHint(){
+  const def=buildLevelDef();
+  const start=def.balls.map(b=>b.pos.slice());
+  if(genWin(def,start))return {status:'solved',ring:null,dir:0,dist:0};
+  const keyOf=st=>st.map(p=>p.join(',')).join(';');
+  const seen=new Set([keyOf(start)]);
+  let frontier=[{st:start,first:null,d:0}];
+  let visited=1;
+  while(frontier.length){
+    const nxt=[];
+    for(const node of frontier){
+      for(let ci=0;ci<RING_COUNT;ci++){
+        for(const dir of[1,-1]){
+          const st=genSim(def,node.st,ci,dir);
+          if(genDup(def,st))continue;
+          const k=keyOf(st);
+          if(seen.has(k))continue;
+          seen.add(k);visited++;
+          const first=node.first||{ring:ci,dir};
+          if(genWin(def,st))return {status:'ok',ring:first.ring,dir:first.dir,dist:node.d+1,visited};
+          nxt.push({st,first,d:node.d+1});
+        }
+      }
+    }
+    frontier=nxt;
+    if(visited>50000)return {status:'overflow',ring:null,dir:0,dist:-1,visited};
+  }
+  return {status:'unsolvable',ring:null,dir:0,dist:-1,visited};
+}
+/* ---- 提示状态/配额 ---- */
+let hintQuota=null,hintFx=null,h3LockUntil=0,h3Flash=null,adPending=null;
+const AdGateway={
+  isReady(){return true;},
+  showRewarded(onReward,onFail){openAdMock(onReward,onFail);}
+};
+function resetHint(){
+  hintQuota={h1:HintConfig.quota.h1,h2:HintConfig.quota.h2,h3:HintConfig.quota.h3};
+  hintFx=null;h3Flash=null;adPending=null;
+  updateHintBadge();
+}
+function hintTotal(){return hintQuota.h1+hintQuota.h2+hintQuota.h3;}
+function updateHintBadge(){
+  const b=document.getElementById('hintBadge');
+  b.textContent=hintTotal();
+  b.className=hintTotal()===0?'zero':'';
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1800);
+}
 /* ---- 交互 ---- */
+/* ---- 提示交互 ---- */
+function hintBlocked(){return won||performance.now()<h3LockUntil;}
+function performHint(kind,res){
+  const now=performance.now();
+  if(kind==='h1'){hintFx={kind,ring:res.ring,dir:null,born:now,bornSteps:steps};}
+  else if(kind==='h2'){hintFx={kind,ring:res.ring,dir:res.dir,born:now,bornSteps:steps};}
+  else if(kind==='h3'){
+    hintFx=null;
+    balls.forEach(b=>{if(b.pos[res.ring]!==null)b.following=true;});
+    h3LockUntil=now+HintConfig.h3LockMs;
+    h3Flash={ci:res.ring,start:now};
+    applyStepCore(res.ring,res.dir);
+  }
+}
+function requestHint(kind){
+  if(hintBlocked())return;
+  if(hintQuota[kind]>0){
+    const res=solveHint();
+    if(res.status!=='ok'){toast(res.status==='solved'?'盘面已达成':'当前盘面无解');return;}
+    hintQuota[kind]--;updateHintBadge();
+    closeHintPanel();
+    performHint(kind,res);
+    return;
+  }
+  adPending=kind;
+  if(AdGateway.isReady())AdGateway.showRewarded(()=>grantAd(kind),()=>toast('未完成广告，未发放提示'));
+  else toast('广告暂不可用');
+}
+function grantAd(kind){
+  hintQuota[kind]=HintConfig.quota[kind];
+  updateHintBadge();
+  toast('提示已恢复');
+}
+function openHintPanel(){
+  if(hintBlocked())return;
+  const p=document.getElementById('hintPanel');
+  p.style.display='flex';
+  [['h1','hc1n'],['h2','hc2n'],['h3','hc3n']].forEach(([k,id])=>{
+    const el=document.getElementById(id);
+    el.textContent=hintQuota[k];
+    el.className='hcN'+(hintQuota[k]===0?' zero':'');
+  });
+}
+function closeHintPanel(){document.getElementById('hintPanel').style.display='none';}
+function openAdMock(onReward,onFail){
+  const m=document.getElementById('adMock');
+  m.style.display='flex';
+  document.getElementById('adOk').onclick=()=>{m.style.display='none';onReward();};
+  document.getElementById('adNo').onclick=()=>{m.style.display='none';onFail&&onFail();};
+}
+/* ---- 提示渲染 ---- */
+function drawHintFx(now){
+  if(hintFx){
+    if(steps!==hintFx.bornSteps||won){hintFx=null;}
+    else{
+      const el=now-hintFx.born;
+      if(el>HintConfig.fxDuration){hintFx=null;}
+      else{
+        const fade=el>HintConfig.fxDuration-600?(HintConfig.fxDuration-el)/600:1;
+        const pulse=0.5+0.35*Math.sin(now/280);
+        const ox=ringXY(hintFx.ring);
+        ctx.save();
+        ctx.beginPath();ctx.arc(ox,cy,R,0,7);
+        ctx.strokeStyle='rgba(208,168,255,'+((0.30+0.22*pulse)*fade)+')';ctx.lineWidth=4;ctx.stroke();
+        ctx.beginPath();ctx.arc(ox,cy,R,0,7);
+        ctx.strokeStyle='rgba(208,168,255,'+((0.10+0.08*pulse)*fade)+')';ctx.lineWidth=10;ctx.stroke();
+        if(hintFx.kind==='h2'&&hintFx.dir){
+          const speed=0.9,span=22*Math.PI/180;
+          const phase=(now/1000*speed*hintFx.dir)%(Math.PI*2);
+          for(let k=0;k<3;k++){
+            let a0=(phase+k*(Math.PI*2/3))%(Math.PI*2);if(a0<0)a0+=Math.PI*2;
+            const a1=a0+span*hintFx.dir;
+            const lo=Math.min(a0,a1),hi=Math.max(a0,a1);
+            ctx.beginPath();ctx.arc(ox,cy,R,lo,hi);
+            ctx.strokeStyle='rgba(255,255,255,'+(0.75*fade)+')';ctx.lineWidth=3;ctx.stroke();
+            const aH=hintFx.dir>0?a1:a0;
+            const hx=ox+R*Math.cos(aH),hy=cy+R*Math.sin(aH);
+            const ux=hintFx.dir>0?-Math.sin(aH):Math.sin(aH);
+            const uy=hintFx.dir>0?Math.cos(aH):-Math.cos(aH);
+            ctx.beginPath();
+            ctx.moveTo(hx+ux*10,hy+uy*10);
+            ctx.lineTo(hx-uy*5-ux*2,hy+ux*5-uy*2);
+            ctx.lineTo(hx+uy*5-ux*2,hy-ux*5-uy*2);
+            ctx.closePath();
+            ctx.fillStyle='rgba(255,255,255,'+(0.85*fade)+')';ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+    }
+  }
+  if(h3Flash){
+    const el=now-h3Flash.start;
+    if(el>200)h3Flash=null;
+    else{
+      ctx.beginPath();ctx.arc(ringXY(h3Flash.ci),cy,R,0,7);
+      ctx.strokeStyle='rgba(255,255,255,'+(0.85*(1-el/200))+')';ctx.lineWidth=3;ctx.stroke();
+    }
+  }
+}
 cv.addEventListener('pointerdown',e=>{
-  if(won)return;
+  if(won||hintBlocked())return;
   const rct=cv.getBoundingClientRect();
   const px=e.clientX-rct.left,py=e.clientY-rct.top;
   const dL=Math.abs(Math.hypot(px-lx,py-cy)-R),dR2=Math.abs(Math.hypot(px-rx,py-cy)-R);
@@ -305,6 +541,12 @@ document.getElementById('restart').addEventListener('click',()=>loadLevel(lvlIdx
 document.getElementById('win').addEventListener('click',()=>{
   loadLevel(lvlIdx===LEVELS.length-1?0:lvlIdx+1);
 });
+document.getElementById('hintBtn').addEventListener('click',openHintPanel);
+document.getElementById('hc1').addEventListener('click',()=>requestHint('h1'));
+document.getElementById('hc2').addEventListener('click',()=>requestHint('h2'));
+document.getElementById('hc3').addEventListener('click',()=>requestHint('h3'));
+document.querySelector('.hpClose').addEventListener('click',closeHintPanel);
+document.getElementById('hintPanel').addEventListener('click',e=>{if(e.target.id==='hintPanel')closeHintPanel();});
 renderBest();
 loadLevel(0);
 (function loop(){draw();requestAnimationFrame(loop);})();
