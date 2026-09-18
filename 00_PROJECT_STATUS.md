@@ -1,11 +1,11 @@
 # Star Orbit 项目状态（唯一事实来源）
 
 > 任何 AI（主 AI / 子 AI / 新会话）接手前必读本文档。每阶段结束由主 AI 更新。
-> 更新时间：2026-09-16 04:30（对应主对话阶段：试玩包 v1.1 完成后）
+> 更新时间：2026-09-18 01:25 UTC（对应主对话阶段：提示系统 v1.2 交付真机自玩 + 评审修复完成后）
 
 ## 一句话现状
 
-星球主题轨道解谜游戏（Web 原型阶段）。核心机制已验证，6 教学关已 BFS 验证+浏览器全通关实测，试玩包 v1.1（三星/存档/动画）已上仓。当前卡点：AI 视觉试玩缺识图模型。
+星球主题轨道解谜游戏（Web 原型阶段）。核心机制已数学验证，6 教学关 BFS 验证 + 浏览器全通关实测；**试玩包 v1.2 完整闭环**（三星/存档/动画/丝滑移动/自适应缩放/三档提示系统/Mock 激励广告位）已通过全链路验收（T1-T8）并交付用户手机浏览器自玩。当前焦点：外部识图 AI 画面评审（提示词已存档，等用户回贴结果）→ 试玩反馈收集 → TapTap 打包预研。
 
 ## 项目宪法摘要（全文见 PROJECT_CHARTER.md）
 
@@ -16,23 +16,25 @@
 
 ## 技术架构与文件
 
-- 引擎：纯 HTML5 Canvas 单文件（无依赖），原型阶段；正式版引擎未定
-- 运行环境：手机 Linux 终端（proot Ubuntu）+ 无头 Playwright 浏览器测试 + node BFS 求解器
-- 仓库：github.com/chenyq9/star-orbit（main）
+- 引擎：纯 HTML5 Canvas 单文件（无依赖），原型阶段；正式版引擎未定（TapTap 打包预研走 Capacitor 路线）
+- 运行环境：手机 Linux 终端（proot Ubuntu）+ 无头浏览器测试（依赖 Shizuku，掉线需重启）+ node BFS 求解器
+- 仓库：github.com/chenyq9/star-orbit（main，最新 commit `294a953`，与本地已同步）
+- 本地工作区：`/tmp/star-orbit`；本地服务：`python3 -m http.server 8765`（掉线重启）
 - 文件：
   - `PROJECT_CHARTER.md` 宪法（不改）
-  - `DESIGN_DRAFT.md` 设计方向（方向A纯解谜为主骨架，B实时物理/C双人对弈/D无尽生成为保留扩展）
-  - `levels/levels-v1.md` 6关设计表+最优解
+  - `DESIGN_DRAFT.md` 设计方向（方向 A 纯解谜主骨架，B 实时物理 / C 双人对弈 / D 无尽生成保留）
+  - `00_PROJECT_STATUS.md` 本文档（唯一事实来源）
+  - `levels/levels-v1.md` 6 关设计表 + 最优解
   - `prototype/skeleton-v0.1.html` 机制骨架（已验证）
-  - `prototype/levels-v1.html` **试玩包 v1.1（当前主文件）**
+  - `prototype/levels-v1.html` **试玩包 v1.2（当前主文件）**
   - `prototype/VERIFY_REPORT.md` 骨架验证报告
-  - `tools/extract-shot.js` 截图提取工具
+  - `tools/extract-shot.js` 截图提取工具；`tools/external_review_prompt.md` 外部评审提示词存档
   - `test-shots/` 测试截图
 
 ## 核心机制（已数学验证）
 
-- 双轨道各12槽（30°/槽），交点：左10↔右8（上）、左2↔右4（下）
-- 转某轨=该轨所有球±1槽；到交点自动双挂；随任一轨离开交点即脱离另一轨
+- 双轨道各 12 槽（30°/槽），交点：左 10↔右 8（上）、左 2↔右 4（下）
+- 转某轨 = 该轨所有球 ±1 槽；到交点自动双挂；随任一轨离开交点即脱离另一轨
 - **已证明**：当前规则下球间永不互挡（碰撞检查是安全冗余）
 - 关卡用 BFS 求解器精确验证（node 环境跑，代码模式在 levels-v1.md）
 
@@ -47,39 +49,38 @@
 | 5 | 交叉航线（双球换轨） | 9 |
 | 6 | 轨道合流（综合） | 10 |
 
+## 当前版本功能清单（v1.2）
+
+- 6 教学关 + 三星评价（≤最优 3 星）+ 进度存档（localStorage: starorbit_progress_v1）+ 解锁链
+- 拖动跟手渲染 + 松手 150ms 缓动 + 自适应缩放（R=min(W*0.31,H*0.26)，全屏可见）
+- 三档提示系统：H1 轨道高亮（紫光晕，不给方向）/ H2 方向箭头 / H3 自动执行一步（计入步数，170ms 锁防连点）
+- 提示配额：每关每尝试 H1×3 / H2×2 / H3×1；restart 重置；不持久化
+- Mock 激励广告位：配额用尽弹面板「模拟看完广告」→ grant 恢复该档满值；`AdGateway` 接口形状（isReady/showRewarded）为 TapTap SDK 预留
+- 实时 BFS 求解器（solveHint）：genSim/genDup/genWin 按 levelDef 泛化（rings/balls 数组 + gates 数组），为三轨预留；返回 status/ring/dir/dist
+- **逻辑层四函数（simStep / hasDup / applyStepCore / checkWin）自骨架验证后未动过，禁改**
+
 ## 待办 / 已知问题
 
-1. 【阻塞】AI 视觉试玩缺识图模型：gemini-3.6-flash(洛樱云)要Google cookie；gpt-5.6-sol(ag)积分池402耗尽；GLM-5.3全系不收图。**未试路线：反代deepseek-vision、维云gpt-5.6-sol、晶晶gpt-5.6-sol**。待用户决策（充值/换默认配置vision花钱跑/先用无视觉文本试玩）
-2. 真人试玩（用户本人+朋友）待进行
-3. 双挂堵门规则（原L4教学设计）在当前规则下不存在，已记为设计决策待讨论
-4. 椭圆变速/第三轨道/音频未启动（按宪法属保留方向，非降级）
-5. 关卡求解提示器（卡关提示下一步）未做
-6. TapTap 商业化调研（版号问题需核实）
-7. 合成 PointerEvent 触发 setPointerCapture 报错（不影响逻辑但日志脏，小修）
+1. 【进行中】外部识图 AI 画面评审：提示词已存档（`tools/external_review_prompt.md`），等用户将外部 AI 回复贴回 → 主 AI 逐条核对采纳。「悟了」时刻描述直接决定 L2 教学设计是否成立
+2. 【进行中】真人试玩反馈：v1.2 已交付用户真机自玩。关键验证点：L2「引力窗口」顿悟感、拖动手感、H1 紫光晕 / H2 箭头视觉直觉、双圆缩放可见性
+3. TapTap 打包预研（Capacitor 路线，纯本地）+ 商业化合规（版号问题需核实）
+4. 双挂堵门规则设计决策（当前规则下不存在，待真人试玩后讨论）
+5. 椭圆变速 / 第三轨道 / 音频未启动（保留方向，非降级）
+6. 合成 PointerEvent 触发 setPointerCapture 报错（不影响逻辑但日志脏，小修）
+7. Shizuku 掉线时浏览器自动化不可用（环境问题，重启 Shizuku 恢复）
 
-## 技术调研结论：AI 试玩零干扰方案（子AI「星轨·技术研究员」2026-09-16）
+## 模型与账号分工（2026-09-18 核对）
 
-- 干扰真正来源 = 屏幕与控制通道被占用（前台渲染+触控注入），不是CPU/内存
-- 容器/VM 在安卓不可行（无KVM跑不了VM、proot无GPU），评分1，放弃
-- 推荐排序：①纯逻辑模拟（BFS求解器已实现且已在用✅）②闲置旧手机专用测试机③云手机（数十元/月）④本机headless（browser包已实测零屏干扰✅）⑤容器/VM（放弃）
-- **项目现状已覆盖排序①和④**：BFS求解器=纯逻辑模拟（已验证6关）；browser包=本机headless（截图157KB已产出，全程不占屏幕）
-- 剩余缺口只有一个：识图模型（AI的"眼"），见待办1
-
-## 模型分工（用户 2026-09-15 授权）
-
-- 主对话 CHAT：ag glm-5.3（用户手动切的）
-- 子 AI 评审「星轨·设计审查员」：ag glm-5.3
-- 功能模型 9 项：洛樱云 zai-org/GLM-5.3（注意 index=8，池子会重排，用前核对！）
-- 识图：待定（三条路全断，见待办1）
-- 不用默认配置（DeepSeek 官方花真钱）
-- ag glm 挂了→停下叫用户
-
-## 账号
-
-- GitHub：chenyq9 / star-orbit，PAT 在记忆库「游戏项目 star-orbit：Github 账号与安全提醒」
-- 本地服务：http-server 8765 端口（/tmp/star-orbit）
+- ⚠️ agentrouter glm-5.3 已于 09-16 下架（503 无可用渠道），勿再用
+- ⚠️ **当前 CHAT 绑定 = 「默认配置」deepseek-v4.1-flash-expires-on-0910（DeepSeek 官方）**——与「不用默认配置」政策不符，待用户确认是否切回洛樱云
+- 9 项功能模型 → 洛樱云（zai-org/GLM-5.3；池子会重排，modelIndex 用前核对）
+- 子 AI「星轨·设计审查员」：FOLLOW_GLOBAL，随 CHAT 绑定
+- 默认配置（DeepSeek 官方）原则不用——花真钱
+- 账号：GitHub chenyq9 / star-orbit，PAT 在记忆库「游戏项目 star-orbit：Github 账号与安全提醒」
 
 ## 历史里程碑
 
-- 09-14 玩法种子入库（circle.html 系列）
-- 09-15 宪法+设计草案+骨架v0.1（BFS验证）+教学关v1+试玩包v1.1，全部实测后上仓
+- 09-14 玩法种子入库（circle.html 系列）；宪法 + 设计草案
+- 09-15 骨架 v0.1（BFS 验证）+ 教学关 v1 + 试玩包 v1.1
+- 09-16 丝滑移动 + 自适应缩放（`3a245dd`）
+- 09-17/18 提示系统 v1.2（`fa31f9d`）→ 锁期 bug 修复（`5cec66d`）→ 全链路验收 T1-T8 → 子 AI 评审 → 修复 4 项（`294a953`）；v1.2 交付用户真机自玩；画面评审交外部识图 AI
