@@ -48,6 +48,7 @@ jobs:
         working-directory: mobile
 
       - name: Build Debug APK
+        working-directory: mobile
         run: |
           cd android
           chmod +x gradlew
