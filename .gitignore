@@ -5,4 +5,4 @@ mobile/android/
 mobile/package-lock.json
 
 # 系统
-.DS_Store
+.DS_Storedist/

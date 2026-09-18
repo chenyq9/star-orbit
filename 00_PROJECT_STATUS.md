@@ -1,11 +1,11 @@
 # Star Orbit 项目状态（唯一事实来源）
 
 > 任何 AI（主 AI / 子 AI / 新会话）接手前必读本文档。每阶段结束由主 AI 更新。
-> 更新时间：2026-09-18 01:25 UTC（对应主对话阶段：提示系统 v1.2 交付真机自玩 + 评审修复完成后）
+> 更新时间：2026-09-19（v1.3 内容扩充完成：17 关全链路验证）
 
 ## 一句话现状
 
-星球主题轨道解谜游戏（Web 原型阶段）。核心机制已数学验证，6 教学关 BFS 验证 + 浏览器全通关实测；**试玩包 v1.2 完整闭环**（三星/存档/动画/丝滑移动/自适应缩放/三档提示系统/Mock 激励广告位）已通过全链路验收（T1-T8）并交付用户手机浏览器自玩。当前焦点：外部识图 AI 画面评审（提示词已存档，等用户回贴结果）→ 试玩反馈收集 → TapTap 打包预研。
+星球主题轨道解谜游戏（Web 原型阶段）。核心机制已数学验证，**关卡扩产完成：17 关**（v1 教学 6 关 + v2 双球巩固带 L7-L12 + 三色挑战带 L13-L17），全链路验证通过（BFS 双保险 + 浏览器 17/17 全通关 + 游戏内 solver 全部最优步破关）。**v1.3 已交付**（prototype/levels-v1.html）。打包基建已就绪（GitHub Actions CI 出包 + 真机部署验证过 v1.2 debug APK）。当前焦点：① 用户真机试玩 v1.3 反馈（重点 L12/L16 卡关感、L13 紫球引入回落是否够）；② 外部识图 AI 画面评审（提示词已存档，等回贴）；③ 上架合规项（防沉迷+隐私政策）未实施。
 
 ## 项目宪法摘要（全文见 PROJECT_CHARTER.md）
 
@@ -25,11 +25,17 @@
   - `DESIGN_DRAFT.md` 设计方向（方向 A 纯解谜主骨架，B 实时物理 / C 双人对弈 / D 无尽生成保留）
   - `00_PROJECT_STATUS.md` 本文档（唯一事实来源）
   - `levels/levels-v1.md` 6 关设计表 + 最优解
+  - `levels/levels-v2.md` **v2 关卡设计文档（L7~L17 量化维度+设计意图）**
   - `prototype/skeleton-v0.1.html` 机制骨架（已验证）
-  - `prototype/levels-v1.html` **试玩包 v1.2（当前主文件）**
+  - `prototype/levels-v1.html` **试玩包 v1.3（当前主文件，17 关）**
   - `prototype/VERIFY_REPORT.md` 骨架验证报告
+  - `tools/orbit_core.js` **规则核心单一来源（simStep/hasDup/isWin 与游戏同源）**
+  - `tools/verify_levels.js` 关卡验证器（BFS：可解性/最优步/解条数/首步分支）
+  - `tools/gen_levels.js` 关卡候选生成器（程序化采样+量化筛选）
+  - `tools/levels-v2.json` v2 关卡设计源（验证输入）
+  - `tools/extract_levels.js` 游戏内关卡反向提取器（双保险验证）
   - `tools/extract-shot.js` 截图提取工具；`tools/external_review_prompt.md` 外部评审提示词存档
-  - `test-shots/` 测试截图
+  - `test-shots/` 测试截图（v13-l1 / v13-l13-purple / v13-l17-final）
 
 ## 核心机制（已数学验证）
 

@@ -1,0 +1,15 @@
+{
+  "levels": [
+    { "name": "L7·暖身回归", "optimal": 5, "balls": [{ "color": "b", "pos": [6, null] }, { "color": "o", "pos": [3, null] }], "targets": [{ "ring": 1, "slot": 5, "color": "b" }, { "ring": 0, "slot": 11, "color": "o" }] },
+    { "name": "L8·双轨接力", "optimal": 7, "balls": [{ "color": "b", "pos": [null, 10] }, { "color": "o", "pos": [9, null] }], "targets": [{ "ring": 0, "slot": 1, "color": "b" }, { "ring": 0, "slot": 8, "color": "o" }] },
+    { "name": "L9·并肩双星", "optimal": 8, "balls": [{ "color": "b", "pos": [null, 1] }, { "color": "o", "pos": [null, 2] }], "targets": [{ "ring": 0, "slot": 4, "color": "b" }, { "ring": 0, "slot": 7, "color": "o" }] },
+    { "name": "L10·交汇演练", "optimal": 9, "balls": [{ "color": "b", "pos": [8, null] }, { "color": "o", "pos": [null, 11] }], "targets": [{ "ring": 1, "slot": 5, "color": "b" }, { "ring": 0, "slot": 6, "color": "o" }] },
+    { "name": "L11·静默调整", "optimal": 10, "balls": [{ "color": "b", "pos": [3, null] }, { "color": "o", "pos": [7, null] }], "targets": [{ "ring": 1, "slot": 1, "color": "b" }, { "ring": 1, "slot": 5, "color": "o" }] },
+    { "name": "L12·巅峰交换", "optimal": 12, "balls": [{ "color": "b", "pos": [null, 11] }, { "color": "o", "pos": [7, null] }], "targets": [{ "ring": 0, "slot": 7, "color": "b" }, { "ring": 1, "slot": 10, "color": "o" }] },
+    { "name": "L13·第三星座", "optimal": 10, "balls": [{ "color": "b", "pos": [null, 2] }, { "color": "o", "pos": [null, 7] }, { "color": "p", "pos": [4, null] }], "targets": [{ "ring": 1, "slot": 10, "color": "b" }, { "ring": 1, "slot": 6, "color": "o" }, { "ring": 1, "slot": 1, "color": "p" }] },
+    { "name": "L14·三星共谋", "optimal": 11, "balls": [{ "color": "b", "pos": [null, 10] }, { "color": "o", "pos": [5, null] }, { "color": "p", "pos": [null, 11] }], "targets": [{ "ring": 1, "slot": 0, "color": "b" }, { "ring": 0, "slot": 9, "color": "o" }, { "ring": 0, "slot": 0, "color": "p" }] },
+    { "name": "L15·引力编织", "optimal": 12, "balls": [{ "color": "b", "pos": [1, null] }, { "color": "o", "pos": [3, null] }, { "color": "p", "pos": [null, 9] }], "targets": [{ "ring": 1, "slot": 7, "color": "b" }, { "ring": 1, "slot": 11, "color": "o" }, { "ring": 1, "slot": 0, "color": "p" }] },
+    { "name": "L16·轨道边际", "optimal": 13, "balls": [{ "color": "b", "pos": [null, 1] }, { "color": "o", "pos": [1, null] }, { "color": "p", "pos": [7, null] }], "targets": [{ "ring": 1, "slot": 11, "color": "b" }, { "ring": 0, "slot": 0, "color": "o" }, { "ring": 1, "slot": 0, "color": "p" }] },
+    { "name": "L17·大合流", "optimal": 14, "balls": [{ "color": "b", "pos": [8, null] }, { "color": "o", "pos": [null, 0] }, { "color": "p", "pos": [null, 11] }], "targets": [{ "ring": 1, "slot": 5, "color": "b" }, { "ring": 1, "slot": 1, "color": "o" }, { "ring": 0, "slot": 9, "color": "p" }] }
+  ]
+}

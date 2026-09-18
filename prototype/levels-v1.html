@@ -3,7 +3,7 @@
 <head>
 <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'>
-<title>Star Orbit · 试玩包 v1.1</title>
+<title>Star Orbit · 星轨 v1.3</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#06060f;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;-webkit-user-select:none;user-select:none;touch-action:none}
@@ -85,13 +85,14 @@ canvas{display:block;touch-action:none}
 </div>
 <div id='toast'></div>
 <script>
-/* Star Orbit 试玩包 v1.1
-   = 教学关卡 v1 引擎 + 最优步数对比 + 三星评价 + 进度存档 + 通关动画
-   最优步数来自 levels-v1.md 的 BFS 精确验证 */
+/* Star Orbit v1.3
+   = 教学关卡 v1 + v2 扩产（17 关：双球巩固带 L7-L12 + 三色挑战带 L13-L17）
+   全部关卡经 tools/verify_levels.js BFS 精确验证，最优步数与声明一致
+   最优步数来自 tools/levels-v2.json 的 BFS 精确验证 */
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
 let W,H,cx,cy,R,lx,rx,gy,stars=[];
 const SLOTS=12,STEP=30;
-const COLORS={b:{fill:'#4a9eff',rgb:'74,158,255'},o:{fill:'#ff9a3c',rgb:'255,154,60'}};
+const COLORS={b:{fill:'#4a9eff',rgb:'74,158,255'},o:{fill:'#ff9a3c',rgb:'255,154,60'},p:{fill:'#b76cff',rgb:'183,108,255'}};
 function gatePartner(c,s){
   if(c===0){if(s===10)return 8;if(s===2)return 4;return null;}
   if(s===8)return 10;if(s===4)return 2;return null;
@@ -108,7 +109,29 @@ const LEVELS=[
   {name:'第5关 · 交叉航线',hint:'两颗星都要换轨，注意它们会互相牵动',optimal:9,
    balls:[{color:'b',pos:[3,null]},{color:'o',pos:[null,9]}],targets:[{ring:1,slot:9,color:'b'},{ring:0,slot:3,color:'o'}]},
   {name:'第6关 · 轨道合流',hint:'综合运用前面所学',optimal:10,
-   balls:[{color:'b',pos:[6,null]},{color:'o',pos:[null,0]}],targets:[{ring:1,slot:6,color:'b'},{ring:0,slot:0,color:'o'}]}
+   balls:[{color:'b',pos:[6,null]},{color:'o',pos:[null,0]}],targets:[{ring:1,slot:6,color:'b'},{ring:0,slot:0,color:'o'}]},
+  {name:'第7关 · 暖身回归',hint:'热身：让两颗星各归其位',optimal:5,
+   balls:[{color:'b',pos:[6,null]},{color:'o',pos:[3,null]}],targets:[{ring:1,slot:5,color:'b'},{ring:0,slot:11,color:'o'}]},
+  {name:'第8关 · 双轨接力',hint:'先送蓝星到左轨，再处理橙星',optimal:7,
+   balls:[{color:'b',pos:[null,10]},{color:'o',pos:[9,null]}],targets:[{ring:0,slot:1,color:'b'},{ring:0,slot:8,color:'o'}]},
+  {name:'第9关 · 并肩双星',hint:'两颗星都在右轨上，怎么把星移到左轨？',optimal:8,
+   balls:[{color:'b',pos:[null,1]},{color:'o',pos:[null,2]}],targets:[{ring:0,slot:4,color:'b'},{ring:0,slot:7,color:'o'}]},
+  {name:'第10关 · 交汇演练',hint:'一个窗口可反复使用',optimal:9,
+   balls:[{color:'b',pos:[8,null]},{color:'o',pos:[null,11]}],targets:[{ring:1,slot:5,color:'b'},{ring:0,slot:6,color:'o'}]},
+  {name:'第11关 · 静默调整',hint:'有时先转过头，才能借到窗口',optimal:10,
+   balls:[{color:'b',pos:[3,null]},{color:'o',pos:[7,null]}],targets:[{ring:1,slot:1,color:'b'},{ring:1,slot:5,color:'o'}]},
+  {name:'第12关 · 巅峰交换',hint:'两星换轨入对轨：先送蓝星回左轨，橙星再跟上',optimal:12,
+   balls:[{color:'b',pos:[null,11]},{color:'o',pos:[7,null]}],targets:[{ring:0,slot:7,color:'b'},{ring:1,slot:10,color:'o'}]},
+  {name:'第13关 · 第三星座',hint:'紫星加入！先安顿它，再送蓝橙归位',optimal:10,
+   balls:[{color:'b',pos:[null,2]},{color:'o',pos:[null,7]},{color:'p',pos:[4,null]}],targets:[{ring:1,slot:10,color:'b'},{ring:1,slot:6,color:'o'},{ring:1,slot:1,color:'p'}]},
+  {name:'第14关 · 三星共谋',hint:'三颗星都要归位，规划先后顺序',optimal:11,
+   balls:[{color:'b',pos:[null,10]},{color:'o',pos:[5,null]},{color:'p',pos:[null,11]}],targets:[{ring:1,slot:0,color:'b'},{ring:0,slot:9,color:'o'},{ring:0,slot:0,color:'p'}]},
+  {name:'第15关 · 引力编织',hint:'窗口可以一用再用，注意每一次经过',optimal:12,
+   balls:[{color:'b',pos:[1,null]},{color:'o',pos:[3,null]},{color:'p',pos:[null,9]}],targets:[{ring:1,slot:7,color:'b'},{ring:1,slot:11,color:'o'},{ring:1,slot:0,color:'p'}]},
+  {name:'第16关 · 轨道边际',hint:'组合技：回顾前面每一关的技巧',optimal:13,
+   balls:[{color:'b',pos:[null,1]},{color:'o',pos:[1,null]},{color:'p',pos:[7,null]}],targets:[{ring:1,slot:11,color:'b'},{ring:0,slot:0,color:'o'},{ring:1,slot:0,color:'p'}]},
+  {name:'第17关 · 大合流',hint:'最终考验：三星归位',optimal:14,
+   balls:[{color:'b',pos:[8,null]},{color:'o',pos:[null,0]},{color:'p',pos:[null,11]}],targets:[{ring:1,slot:5,color:'b'},{ring:1,slot:1,color:'o'},{ring:0,slot:9,color:'p'}]}
 ];
 /* ---- 进度存档 ---- */
 const SAVE_KEY='starorbit_progress_v1';
