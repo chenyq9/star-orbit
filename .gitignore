@@ -1,0 +1,8 @@
+# 移动端打包目录
+# node_modules 与 android/ 均可由仓库内源文件重建，不入库
+mobile/node_modules/
+mobile/android/
+mobile/package-lock.json
+
+# 系统
+.DS_Store

@@ -1,0 +1,8 @@
+{
+  "appId": "com.chenyq9.starorbit",
+  "appName": "Star Orbit",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  }
+}

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'>
+<title>Star Orbit · 试玩包 v1.1</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#06060f;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;-webkit-user-select:none;user-select:none;touch-action:none}
+canvas{display:block;touch-action:none}
+#hud{position:fixed;top:14px;left:0;right:0;text-align:center;color:rgba(180,200,255,.6);font-size:12px;letter-spacing:1px;pointer-events:none;z-index:10;padding:0 76px;line-height:1.6}
+#hud b{color:#dfe8ff}
+.navbtn{position:fixed;top:10px;color:rgba(180,200,255,.6);font-size:20px;z-index:15;cursor:pointer;user-select:none;padding:6px 10px}
+#prev{left:8px}
+#next{right:8px}
+#restart{right:44px;font-size:18px;top:11px}
+.navbtn.locked{opacity:.25;pointer-events:none}
+#win{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;background:rgba(6,6,15,.88);color:#dfe8ff;z-index:20;letter-spacing:3px;cursor:pointer}
+#win h2{font-size:26px;margin-bottom:14px}
+#stars{font-size:34px;letter-spacing:10px;margin-bottom:10px;height:44px}
+#stars span{display:inline-block;opacity:0;transform:scale(0);animation:pop .35s forwards}
+#stars span.on{color:#ffd76a;text-shadow:0 0 12px rgba(255,215,106,.6)}
+#stars span.off{color:rgba(140,160,200,.3)}
+#stars span:nth-child(1){animation-delay:.15s}
+#stars span:nth-child(2){animation-delay:.35s}
+#stars span:nth-child(3){animation-delay:.55s}
+@keyframes pop{to{opacity:1;transform:scale(1)}}
+#wininfo{font-size:14px;color:rgba(180,200,255,.7);margin-bottom:6px}
+#winsub{font-size:12px;color:rgba(180,200,255,.5)}
+#best{position:fixed;bottom:12px;left:0;right:0;text-align:center;color:rgba(180,200,255,.35);font-size:11px;letter-spacing:1px;pointer-events:none;z-index:10}
+#hintBtn{position:fixed;right:14px;bottom:44px;width:46px;height:46px;border-radius:50%;background:rgba(20,24,48,.82);border:1px solid rgba(208,168,255,.4);color:#e8dcff;font-size:22px;display:flex;align-items:center;justify-content:center;z-index:16;cursor:pointer;box-shadow:0 0 14px rgba(208,168,255,.25)}
+#hintBadge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:8px;background:#8a6cff;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0 3px}
+#hintBadge.zero{background:rgba(120,130,160,.5)}
+#hintPanel{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:rgba(4,6,16,.45);z-index:30}
+#hintPanelCard{width:100%;max-width:420px;background:rgba(14,16,34,.96);border-top:1px solid rgba(208,168,255,.25);border-radius:18px 18px 0 0;padding:14px 14px calc(14px + env(safe-area-inset-bottom));box-sizing:border-box}
+.hpTitle{color:#dfe8ff;font-size:15px;letter-spacing:2px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.hpClose{color:rgba(180,200,255,.5);font-size:13px;cursor:pointer;padding:2px 8px}
+.hintCard{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(140,150,200,.18);border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer}
+.hintCard:active{background:rgba(255,255,255,.08)}
+.hcIcon{width:34px;height:34px;border-radius:50%;background:rgba(138,108,255,.18);border:1px solid rgba(138,108,255,.4);color:#cbb8ff;font-size:16px;display:flex;align-items:center;justify-content:center;flex:none}
+.hcText{flex:1;color:#dfe8ff;font-size:13px}
+.hcText b{display:block;font-size:14px;letter-spacing:1px}
+.hcText small{color:rgba(180,200,255,.55);font-size:11px}
+.hcN{color:#8a6cff;font-size:18px;font-weight:700;min-width:22px;text-align:right}
+.hcN.zero{color:rgba(140,150,180,.4);font-size:13px}
+#adMock{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(4,6,16,.6);z-index:40}
+#adCard{width:78%;max-width:320px;background:rgba(16,18,38,.98);border:1px solid rgba(208,168,255,.3);border-radius:16px;padding:22px 18px;text-align:center}
+.adTitle{color:#ffd76a;font-size:16px;letter-spacing:2px;margin-bottom:8px}
+.adSub{color:rgba(180,200,255,.6);font-size:12px;line-height:1.6;margin-bottom:16px}
+#adOk{background:linear-gradient(135deg,#8a6cff,#6a4fe0);color:#fff;border-radius:10px;padding:11px;font-size:14px;letter-spacing:1px;cursor:pointer;margin-bottom:10px}
+#adNo{color:rgba(180,200,255,.5);font-size:12px;cursor:pointer;padding:6px}
+#toast{position:fixed;left:50%;top:70px;transform:translateX(-50%) translateY(-8px);background:rgba(16,18,38,.92);border:1px solid rgba(208,168,255,.3);color:#dfe8ff;font-size:12px;letter-spacing:1px;padding:8px 16px;border-radius:20px;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<canvas id='c'></canvas>
+<div id='hud'></div>
+<div id='prev' class='navbtn'>‹</div>
+<div id='restart' class='navbtn'>↺</div>
+<div id='next' class='navbtn'>›</div>
+<div id='win'>
+  <h2 id='wintitle'>轨道归位 ✔</h2>
+  <div id='stars'></div>
+  <div id='wininfo'></div>
+  <div id='winsub'>点击进入下一关</div>
+</div>
+<div id='best'></div>
+<div id='hintBtn'>💡<span id='hintBadge'></span></div>
+<div id='hintPanel'>
+  <div id='hintPanelCard'>
+    <div class='hpTitle'>提示<span class='hpClose'>✕</span></div>
+    <div class='hintCard' id='hc1'><span class='hcIcon'>◎</span><span class='hcText'><b>轨道指引</b><small>高亮应该旋转的轨道（不给方向）</small></span><span class='hcN' id='hc1n'></span></div>
+    <div class='hintCard' id='hc2'><span class='hcIcon'>➤</span><span class='hcText'><b>轨道 + 方向</b><small>在高亮轨道上显示旋转方向箭头</small></span><span class='hcN' id='hc2n'></span></div>
+    <div class='hintCard' id='hc3'><span class='hcIcon'>▶</span><span class='hcText'><b>自动执行</b><small>自动完成下一步旋转（计入步数）</small></span><span class='hcN' id='hc3n'></span></div>
+  </div>
+</div>
+<div id='adMock'>
+  <div id='adCard'>
+    <div class='adTitle'>提示已用完</div>
+    <div class='adSub'>观看激励视频广告可恢复本档提示次数<br>（TapTap SDK 接入后生效，当前为模拟）</div>
+    <div id='adOk'>▶ 模拟看完广告</div>
+    <div id='adNo'>暂不需要</div>
+  </div>
+</div>
+<div id='toast'></div>
+<script>
+/* Star Orbit 试玩包 v1.1
+   = 教学关卡 v1 引擎 + 最优步数对比 + 三星评价 + 进度存档 + 通关动画
+   最优步数来自 levels-v1.md 的 BFS 精确验证 */
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+let W,H,cx,cy,R,lx,rx,gy,stars=[];
+const SLOTS=12,STEP=30;
+const COLORS={b:{fill:'#4a9eff',rgb:'74,158,255'},o:{fill:'#ff9a3c',rgb:'255,154,60'}};
+function gatePartner(c,s){
+  if(c===0){if(s===10)return 8;if(s===2)return 4;return null;}
+  if(s===8)return 10;if(s===4)return 2;return null;
+}
+const LEVELS=[
+  {name:'第1关 · 启程',hint:'拖动蓝色轨道，让行星沿轨道前进',optimal:3,
+   balls:[{color:'b',pos:[0,null]}],targets:[{ring:0,slot:3,color:'b'}]},
+  {name:'第2关 · 引力窗口',hint:'轨道相交处是引力窗口，行星可以借机换轨',optimal:4,
+   balls:[{color:'b',pos:[5,null]}],targets:[{ring:1,slot:5,color:'b'}]},
+  {name:'第3关 · 双星协奏',hint:'两颗星都要归位，先想好顺序',optimal:8,
+   balls:[{color:'b',pos:[0,null]},{color:'o',pos:[null,0]}],targets:[{ring:1,slot:0,color:'b'},{ring:0,slot:0,color:'o'}]},
+  {name:'第4关 · 弧的抉择',hint:'去往另一条轨道，不一定走最近的窗口',optimal:2,
+   balls:[{color:'b',pos:[4,null]}],targets:[{ring:1,slot:4,color:'b'}]},
+  {name:'第5关 · 交叉航线',hint:'两颗星都要换轨，注意它们会互相牵动',optimal:9,
+   balls:[{color:'b',pos:[3,null]},{color:'o',pos:[null,9]}],targets:[{ring:1,slot:9,color:'b'},{ring:0,slot:3,color:'o'}]},
+  {name:'第6关 · 轨道合流',hint:'综合运用前面所学',optimal:10,
+   balls:[{color:'b',pos:[6,null]},{color:'o',pos:[null,0]}],targets:[{ring:1,slot:6,color:'b'},{ring:0,slot:0,color:'o'}]}
+];
+/* ---- 进度存档 ---- */
+const SAVE_KEY='starorbit_progress_v1';
+let progress={unlocked:1,best:{}};
+try{const s=localStorage.getItem(SAVE_KEY);if(s)progress=JSON.parse(s);}catch(e){}
+function saveProgress(){
+  try{localStorage.setItem(SAVE_KEY,JSON.stringify(progress));}catch(e){}
+  renderBest();
+}
+function starOf(steps,optimal){
+  if(steps<=optimal)return 3;
+  if(steps<=optimal+2)return 2;
+  return 1;
+}
+/* ---- 状态 ---- */
+let lvlIdx=0,balls,targets,steps,won,winTime=0,drag=null,visual=0;
+function resize(){
+  const dpr=window.devicePixelRatio||1;
+  W=innerWidth;H=innerHeight;
+  cv.width=W*dpr;cv.height=H*dpr;
+  cv.style.width=W+'px';cv.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  cx=W/2;cy=H/2;
+  R=Math.min(W*0.31,H*0.26);
+  lx=cx-R/2;rx=cx+R/2;
+  gy=Math.sqrt(3)/2*R;
+  stars=[];
+  for(let i=0;i<90;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.3,a:Math.random()*.4+.15});
+}
+addEventListener('resize',resize);resize();
+function clampLevel(i){return Math.max(0,Math.min(i,Math.min(LEVELS.length-1,progress.unlocked-1)));}
+function loadLevel(i){
+  lvlIdx=clampLevel(i);
+  const L=LEVELS[lvlIdx];
+  balls=L.balls.map(b=>{
+    const nb={color:b.color,pos:b.pos.slice(),renderX:null,renderY:null,animFromX:null,animFromY:null,animStart:0,following:false};
+    const xy=ballXY(nb);
+    if(xy){nb.renderX=xy[0];nb.renderY=xy[1];nb.animFromX=xy[0];nb.animFromY=xy[1];}
+    return nb;
+  });
+  targets=L.targets;
+  steps=0;won=false;drag=null;visual=0;winTime=0;
+  document.getElementById('win').style.display='none';
+  closeHintPanel();document.getElementById('adMock').style.display='none';
+  updateHud();updateNav();resetHint();
+}
+function updateHud(){
+  const L=LEVELS[lvlIdx];
+  document.getElementById('hud').innerHTML=
+    L.name+'（'+(lvlIdx+1)+'/'+LEVELS.length+'）<br>'+L.hint+
+    ' · 步数 <b>'+steps+'</b> / 最优 <b>'+L.optimal+'</b>';
+}
+function updateNav(){
+  const next=document.getElementById('next');
+  if(lvlIdx>=Math.min(LEVELS.length-1,progress.unlocked-1))next.classList.add('locked');
+  else next.classList.remove('locked');
+}
+function renderBest(){
+  const parts=LEVELS.map((L,i)=>{
+    const b=progress.best[i];
+    if(b===undefined)return '·';
+    return '★'.repeat(starOf(b,L.optimal));
+  });
+  document.getElementById('best').textContent='通关记录：'+parts.join('　');
+}
+/* ---- 核心规则（与 BFS 验证脚本同源） ---- */
+function simStep(ci,dir){
+  const sim=balls.map(b=>b.pos.slice());
+  for(const p of sim){if(p[ci]!==null)p[ci]=(p[ci]+dir+SLOTS)%SLOTS;}
+  for(const p of sim){
+    if(p[ci]===null)continue;
+    const o=1-ci,g=gatePartner(ci,p[ci]);
+    p[o]=(g!==null)?g:null;
+  }
+  return sim;
+}
+function hasDup(sim){
+  for(let c=0;c<2;c++){
+    const seen=new Set();
+    for(const p of sim){if(p[c]===null)continue;if(seen.has(p[c]))return true;seen.add(p[c]);}
+  }
+  return false;
+}
+function applyStepCore(ci,dir){
+  const sim=simStep(ci,dir);
+  balls.forEach((b,i)=>b.pos=sim[i]);
+  steps++;updateHud();checkWin();
+}
+function checkWin(){
+  for(const t of targets){
+    if(!balls.some(b=>b.color===t.color&&b.pos[t.ring]===t.slot))return;
+  }
+  won=true;winTime=performance.now();
+  const L=LEVELS[lvlIdx];
+  const starCount=starOf(steps,L.optimal);
+  const prevBest=progress.best[lvlIdx];
+  if(prevBest===undefined||steps<prevBest)progress.best[lvlIdx]=steps;
+  if(lvlIdx+1>=progress.unlocked&&lvlIdx+1<LEVELS.length)progress.unlocked=lvlIdx+2;
+  saveProgress();
+  const last=lvlIdx===LEVELS.length-1;
+  document.getElementById('wintitle').textContent=last?'全部通关 ✔':'轨道归位 ✔';
+  const sHtml='<span class="'+(starCount>=1?'on':'off')+'">★</span><span class="'+(starCount>=2?'on':'off')+'">★</span><span class="'+(starCount>=3?'on':'off')+'">★</span>';
+  document.getElementById('stars').innerHTML=sHtml;
+  document.getElementById('wininfo').textContent='本关步数 '+steps+' / 最优 '+L.optimal+(prevBest!==undefined&&steps>prevBest?'（最佳 '+prevBest+'）':'');
+  document.getElementById('winsub').textContent=last?'点击回到第1关':'点击进入下一关';
+  document.getElementById('win').style.display='flex';
+}
+/* ---- 绘制 ---- */
+function ringXY(c){return c===0?lx:rx;}
+function slotXY(c,s){const a=s*STEP*Math.PI/180;return[ringXY(c)+R*Math.cos(a),cy+R*Math.sin(a)];}
+function ballXY(b){for(let c=0;c<2;c++)if(b.pos[c]!==null)return slotXY(c,b.pos[c]);return null;}
+function targetXY(b){
+  if(drag&&b.pos[drag.ci]!==null){
+    const a=(b.pos[drag.ci]+visual)*STEP*Math.PI/180;
+    return[ringXY(drag.ci)+R*Math.cos(a),cy+R*Math.sin(a)];
+  }
+  return ballXY(b);
+}
+function drawBall(x,y,color,alpha,isInt,scale){
+  const r=R*.06*(scale||1),col=COLORS[color].fill,rgb=COLORS[color].rgb;
+  ctx.globalAlpha=alpha;
+  const g=ctx.createRadialGradient(x,y,0,x,y,r*2.2);
+  g.addColorStop(0,'rgba('+rgb+',.3)');g.addColorStop(1,'rgba('+rgb+',0)');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r*2.2,0,7);ctx.fill();
+  ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=col;ctx.fill();
+  ctx.beginPath();ctx.arc(x-r*.28,y-r*.28,r*.3,0,7);ctx.fillStyle='rgba(255,255,255,.45)';ctx.fill();
+  if(isInt){ctx.beginPath();ctx.arc(x,y,r*1.5,0,7);ctx.strokeStyle='rgba(208,168,255,.75)';ctx.lineWidth=1.5;ctx.stroke();}
+  ctx.globalAlpha=1;
+}
+function draw(){
+  ctx.fillStyle='#06060f';ctx.fillRect(0,0,W,H);
+  for(const s of stars){ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fillStyle='rgba(200,220,255,'+s.a+')';ctx.fill();}
+  for(let c=0;c<2;c++){
+    const active=drag&&drag.ci===c;
+    ctx.beginPath();ctx.arc(ringXY(c),cy,R,0,7);
+    ctx.strokeStyle=active?'rgba(255,255,255,.85)':'rgba('+(c===0?'74,158,255':'255,154,60')+',.45)';
+    ctx.lineWidth=active?3:2;ctx.stroke();
+    for(let i=0;i<SLOTS;i++){
+      const[x,y]=slotXY(c,i);
+      ctx.beginPath();ctx.arc(x,y,2,0,7);
+      ctx.fillStyle='rgba('+(c===0?'74,158,255':'255,154,60')+',.25)';ctx.fill();
+    }
+  }
+  [[cx,cy-gy],[cx,cy+gy]].forEach(([x,y])=>{
+    ctx.beginPath();ctx.arc(x,y,R*.08,0,7);
+    ctx.strokeStyle='rgba(208,168,255,.3)';ctx.lineWidth=1.5;ctx.stroke();
+  });
+  drawHintFx(performance.now());
+  for(const t of targets){
+    const[x,y]=slotXY(t.ring,t.slot);
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.arc(x,y,R*.06,0,7);
+    ctx.strokeStyle=COLORS[t.color].fill;ctx.lineWidth=2;ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath();ctx.arc(x,y,2,0,7);ctx.fillStyle=COLORS[t.color].fill+'99';ctx.fill();
+  }
+  const wonPulse=won?0.5+0.5*Math.sin((performance.now()-winTime)/300):0;
+  const wonScale=won?1+0.08*wonPulse:1;
+  const now=performance.now();
+  for(const b of balls){
+    const isInt=b.pos[0]!==null&&b.pos[1]!==null;
+    const moving=drag&&b.pos[drag.ci]!==null;
+    const alpha=(drag&&!moving)?0.4:1;
+    let x,y;
+    if(moving){
+      const t=targetXY(b);
+      x=t[0];y=t[1];
+      b.renderX=x;b.renderY=y;b.following=true;
+    }else{
+      if(b.following){b.animFromX=b.renderX;b.animFromY=b.renderY;b.animStart=now;b.following=false;}
+      const t=ballXY(b);if(!t)continue;
+      const tx=t[0],ty=t[1];
+      if(b.renderX===null){b.renderX=tx;b.renderY=ty;b.animFromX=tx;b.animFromY=ty;}
+      if(b.animFromX===null){b.animFromX=b.renderX;b.animFromY=b.renderY;b.animStart=now;}
+      const el=now-b.animStart;
+      const k=el>=150?1:1-Math.pow(1-el/150,3);
+      x=b.animFromX+(tx-b.animFromX)*k;
+      y=b.animFromY+(ty-b.animFromY)*k;
+      b.renderX=x;b.renderY=y;
+      if(k>=1){b.renderX=tx;b.renderY=ty;}
+    }
+    drawBall(x,y,b.color,alpha,isInt,wonScale);
+  }
+  if(won){
+    const t=((performance.now()-winTime)%1200)/1200;
+    for(const tt of targets){
+      const[x,y]=slotXY(tt.ring,tt.slot);
+      ctx.beginPath();ctx.arc(x,y,R*(.06+t*.22),0,7);
+      ctx.strokeStyle='rgba(255,215,106,'+(0.5*(1-t))+')';ctx.lineWidth=2;ctx.stroke();
+    }
+  }
+}
+/* ---- 提示系统 v1.2（solver 泛化抽象，为三轨预留） ---- */
+const RING_COUNT=2;
+const HintConfig={
+  quota:{h1:3,h2:2,h3:1},
+  fxDuration:4200,
+  h3LockMs:170
+};
+function buildLevelDef(){
+  const rings=[];
+  for(let c=0;c<RING_COUNT;c++){
+    const gates={};
+    for(let s=0;s<SLOTS;s++){
+      const g=gatePartner(c,s);
+      if(g!==null)gates[s]=[{ring:1-c,slot:g}];
+    }
+    rings.push({slots:SLOTS,gates});
+  }
+  return {rings,balls:balls.map(b=>({color:b.color,pos:b.pos.slice()})),targets:targets};
+}
+function genSim(def,state,ci,dir){
+  const sim=state.map(p=>p.slice());
+  const S=def.rings[ci].slots;
+  for(const p of sim){if(p[ci]!==null)p[ci]=(p[ci]+dir+S)%S;}
+  for(const p of sim){
+    if(p[ci]===null)continue;
+    const gates=def.rings[ci].gates[p[ci]];
+    const keep={};keep[ci]=p[ci];
+    if(gates)for(const g of gates)keep[g.ring]=g.slot;
+    for(let r=0;r<def.rings.length;r++)p[r]=(r in keep)?keep[r]:null;
+  }
+  return sim;
+}
+function genDup(def,sim){
+  for(let c=0;c<def.rings.length;c++){
+    const seen=new Set();
+    for(const p of sim){if(p[c]===null)continue;if(seen.has(p[c]))return true;seen.add(p[c]);}
+  }
+  return false;
+}
+function genWin(def,state){
+  return def.targets.every(t=>def.balls.some((b,i)=>b.color===t.color&&state[i][t.ring]===t.slot));
+}
+function solveHint(){
+  const def=buildLevelDef();
+  const start=def.balls.map(b=>b.pos.slice());
+  if(genWin(def,start))return {status:'solved',ring:null,dir:0,dist:0};
+  const keyOf=st=>st.map(p=>p.join(',')).join(';');
+  const seen=new Set([keyOf(start)]);
+  let frontier=[{st:start,first:null,d:0}];
+  let visited=1;
+  while(frontier.length){
+    const nxt=[];
+    for(const node of frontier){
+      for(let ci=0;ci<def.rings.length;ci++){
+        for(const dir of[1,-1]){
+          const st=genSim(def,node.st,ci,dir);
+          if(genDup(def,st))continue;
+          const k=keyOf(st);
+          if(seen.has(k))continue;
+          seen.add(k);visited++;
+          const first=node.first||{ring:ci,dir};
+          if(genWin(def,st))return {status:'ok',ring:first.ring,dir:first.dir,dist:node.d+1,visited};
+          nxt.push({st,first,d:node.d+1});
+        }
+      }
+    }
+    frontier=nxt;
+    if(visited>50000)return {status:'overflow',ring:null,dir:0,dist:-1,visited};
+  }
+  return {status:'unsolvable',ring:null,dir:0,dist:-1,visited};
+}
+/* ---- 提示状态/配额 ---- */
+let hintQuota=null,hintFx=null,h3LockUntil=0,h3Flash=null;
+const AdGateway={
+  isReady(){return true;},
+  showRewarded(onReward,onFail){openAdMock(onReward,onFail);}
+};
+function resetHint(){
+  hintQuota={h1:HintConfig.quota.h1,h2:HintConfig.quota.h2,h3:HintConfig.quota.h3};
+  hintFx=null;h3Flash=null;h3LockUntil=0;
+  updateHintBadge();
+}
+function hintTotal(){return hintQuota.h1+hintQuota.h2+hintQuota.h3;}
+function updateHintBadge(){
+  const b=document.getElementById('hintBadge');
+  b.textContent=hintTotal();
+  b.className=hintTotal()===0?'zero':'';
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1800);
+}
+/* ---- 交互 ---- */
+/* ---- 提示交互 ---- */
+function hintBlocked(){return won||performance.now()<h3LockUntil;}
+function performHint(kind,res){
+  const now=performance.now();
+  if(kind==='h1'){hintFx={kind,ring:res.ring,dir:null,born:now,bornSteps:steps};}
+  else if(kind==='h2'){hintFx={kind,ring:res.ring,dir:res.dir,born:now,bornSteps:steps};}
+  else if(kind==='h3'){
+    hintFx=null;
+    balls.forEach(b=>{if(b.pos[res.ring]!==null)b.following=true;});
+    h3LockUntil=now+HintConfig.h3LockMs;
+    h3Flash={ci:res.ring,start:now};
+    applyStepCore(res.ring,res.dir);
+  }
+}
+function requestHint(kind){
+  if(won)return;
+  if(drag){drag=null;visual=0;}
+  if(hintQuota[kind]>0){
+    if(kind==='h3'&&performance.now()<h3LockUntil){toast('等旋转完成');return;}
+    const res=solveHint();
+    if(res.status!=='ok'){toast(res.status==='solved'?'盘面已达成':'当前盘面无解');return;}
+    hintQuota[kind]--;updateHintBadge();
+    closeHintPanel();
+    performHint(kind,res);
+    return;
+  }
+  if(AdGateway.isReady())AdGateway.showRewarded(()=>grantAd(kind),()=>toast('未完成广告，未发放提示'));
+  else toast('广告暂不可用');
+}
+function grantAd(kind){
+  hintQuota[kind]=HintConfig.quota[kind];
+  updateHintBadge();
+  toast('提示已恢复');
+}
+function openHintPanel(){
+  if(hintBlocked())return;
+  const p=document.getElementById('hintPanel');
+  p.style.display='flex';
+  [['h1','hc1n'],['h2','hc2n'],['h3','hc3n']].forEach(([k,id])=>{
+    const el=document.getElementById(id);
+    el.textContent=hintQuota[k];
+    el.className='hcN'+(hintQuota[k]===0?' zero':'');
+  });
+}
+function closeHintPanel(){document.getElementById('hintPanel').style.display='none';}
+function openAdMock(onReward,onFail){
+  const m=document.getElementById('adMock');
+  m.style.display='flex';
+  document.getElementById('adOk').onclick=()=>{m.style.display='none';onReward();};
+  document.getElementById('adNo').onclick=()=>{m.style.display='none';onFail&&onFail();};
+}
+/* ---- 提示渲染 ---- */
+function drawHintFx(now){
+  if(hintFx){
+    if(steps!==hintFx.bornSteps||won){hintFx=null;}
+    else{
+      const el=now-hintFx.born;
+      if(el>HintConfig.fxDuration){hintFx=null;}
+      else{
+        const fade=el>HintConfig.fxDuration-600?(HintConfig.fxDuration-el)/600:1;
+        const pulse=0.5+0.35*Math.sin(now/280);
+        const ox=ringXY(hintFx.ring);
+        ctx.save();
+        ctx.beginPath();ctx.arc(ox,cy,R,0,7);
+        ctx.strokeStyle='rgba(208,168,255,'+((0.30+0.22*pulse)*fade)+')';ctx.lineWidth=4;ctx.stroke();
+        ctx.beginPath();ctx.arc(ox,cy,R,0,7);
+        ctx.strokeStyle='rgba(208,168,255,'+((0.10+0.08*pulse)*fade)+')';ctx.lineWidth=10;ctx.stroke();
+        if(hintFx.kind==='h2'&&hintFx.dir){
+          const speed=0.9,span=22*Math.PI/180;
+          const phase=(now/1000*speed*hintFx.dir)%(Math.PI*2);
+          for(let k=0;k<3;k++){
+            let a0=(phase+k*(Math.PI*2/3))%(Math.PI*2);if(a0<0)a0+=Math.PI*2;
+            const a1=a0+span*hintFx.dir;
+            const lo=Math.min(a0,a1),hi=Math.max(a0,a1);
+            ctx.beginPath();ctx.arc(ox,cy,R,lo,hi);
+            ctx.strokeStyle='rgba(255,255,255,'+(0.75*fade)+')';ctx.lineWidth=3;ctx.stroke();
+            const aH=hintFx.dir>0?a1:a0;
+            const hx=ox+R*Math.cos(aH),hy=cy+R*Math.sin(aH);
+            const ux=hintFx.dir>0?-Math.sin(aH):Math.sin(aH);
+            const uy=hintFx.dir>0?Math.cos(aH):-Math.cos(aH);
+            ctx.beginPath();
+            ctx.moveTo(hx+ux*10,hy+uy*10);
+            ctx.lineTo(hx-uy*5-ux*2,hy+ux*5-uy*2);
+            ctx.lineTo(hx+uy*5-ux*2,hy-ux*5-uy*2);
+            ctx.closePath();
+            ctx.fillStyle='rgba(255,255,255,'+(0.85*fade)+')';ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+    }
+  }
+  if(h3Flash){
+    const el=now-h3Flash.start;
+    if(el>200)h3Flash=null;
+    else{
+      ctx.beginPath();ctx.arc(ringXY(h3Flash.ci),cy,R,0,7);
+      ctx.strokeStyle='rgba(255,255,255,'+(0.85*(1-el/200))+')';ctx.lineWidth=3;ctx.stroke();
+    }
+  }
+}
+cv.addEventListener('pointerdown',e=>{
+  if(won||hintBlocked())return;
+  const rct=cv.getBoundingClientRect();
+  const px=e.clientX-rct.left,py=e.clientY-rct.top;
+  const dL=Math.abs(Math.hypot(px-lx,py-cy)-R),dR2=Math.abs(Math.hypot(px-rx,py-cy)-R);
+  let ci=null;
+  if(dL<R*.7&&dL<=dR2)ci=0;else if(dR2<R*.7)ci=1;
+  if(ci===null)return;
+  drag={ci,last:Math.atan2(py-cy,px-ringXY(ci))*180/Math.PI,accum:0,applied:0,id:e.pointerId};
+  cv.setPointerCapture(e.pointerId);
+});
+cv.addEventListener('pointermove',e=>{
+  if(!drag||e.pointerId!==drag.id)return;
+  if(won){drag=null;visual=0;return;}
+  const rct=cv.getBoundingClientRect();
+  const px=e.clientX-rct.left,py=e.clientY-rct.top;
+  let a=Math.atan2(py-cy,px-ringXY(drag.ci))*180/Math.PI;
+  let d=a-drag.last;while(d>180)d-=360;while(d<-180)d+=360;
+  drag.accum+=d;drag.last=a;
+  let want=Math.trunc(drag.accum/STEP);
+  while(drag.applied<want){
+    if(!hasDup(simStep(drag.ci,1))){applyStepCore(drag.ci,1);drag.applied++;}
+    else{drag.accum=drag.applied*STEP+(STEP-.01);break;}
+  }
+  while(drag.applied>want){
+    if(!hasDup(simStep(drag.ci,-1))){applyStepCore(drag.ci,-1);drag.applied--;}
+    else{drag.accum=drag.applied*STEP-(STEP-.01);break;}
+  }
+  visual=(drag.accum-drag.applied*STEP)/STEP;
+});
+function up(e){
+  if(!drag||e.pointerId!==drag.id)return;
+  if(!won){
+    if(visual>=0.5){if(!hasDup(simStep(drag.ci,1)))applyStepCore(drag.ci,1);}
+    else if(visual<=-0.5){if(!hasDup(simStep(drag.ci,-1)))applyStepCore(drag.ci,-1);}
+  }
+  visual=0;drag=null;
+}
+cv.addEventListener('pointerup',up);
+cv.addEventListener('pointercancel',up);
+document.getElementById('prev').addEventListener('click',()=>loadLevel(lvlIdx-1));
+document.getElementById('next').addEventListener('click',()=>loadLevel(lvlIdx+1));
+document.getElementById('restart').addEventListener('click',()=>loadLevel(lvlIdx));
+document.getElementById('win').addEventListener('click',()=>{
+  loadLevel(lvlIdx===LEVELS.length-1?0:lvlIdx+1);
+});
+document.getElementById('hintBtn').addEventListener('click',openHintPanel);
+document.getElementById('hc1').addEventListener('click',()=>requestHint('h1'));
+document.getElementById('hc2').addEventListener('click',()=>requestHint('h2'));
+document.getElementById('hc3').addEventListener('click',()=>requestHint('h3'));
+document.querySelector('.hpClose').addEventListener('click',closeHintPanel);
+document.getElementById('hintPanel').addEventListener('click',e=>{if(e.target.id==='hintPanel')closeHintPanel();});
+renderBest();
+loadLevel(0);
+(function loop(){draw();requestAnimationFrame(loop);})();
+</script>
+</body>
+</html>
