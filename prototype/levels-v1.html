@@ -354,7 +354,7 @@ function solveHint(){
   while(frontier.length){
     const nxt=[];
     for(const node of frontier){
-      for(let ci=0;ci<RING_COUNT;ci++){
+      for(let ci=0;ci<def.rings.length;ci++){
         for(const dir of[1,-1]){
           const st=genSim(def,node.st,ci,dir);
           if(genDup(def,st))continue;
@@ -373,14 +373,14 @@ function solveHint(){
   return {status:'unsolvable',ring:null,dir:0,dist:-1,visited};
 }
 /* ---- 提示状态/配额 ---- */
-let hintQuota=null,hintFx=null,h3LockUntil=0,h3Flash=null,adPending=null;
+let hintQuota=null,hintFx=null,h3LockUntil=0,h3Flash=null;
 const AdGateway={
   isReady(){return true;},
   showRewarded(onReward,onFail){openAdMock(onReward,onFail);}
 };
 function resetHint(){
   hintQuota={h1:HintConfig.quota.h1,h2:HintConfig.quota.h2,h3:HintConfig.quota.h3};
-  hintFx=null;h3Flash=null;adPending=null;
+  hintFx=null;h3Flash=null;h3LockUntil=0;
   updateHintBadge();
 }
 function hintTotal(){return hintQuota.h1+hintQuota.h2+hintQuota.h3;}
@@ -411,16 +411,16 @@ function performHint(kind,res){
 }
 function requestHint(kind){
   if(won)return;
+  if(drag){drag=null;visual=0;}
   if(hintQuota[kind]>0){
+    if(kind==='h3'&&performance.now()<h3LockUntil){toast('等旋转完成');return;}
     const res=solveHint();
     if(res.status!=='ok'){toast(res.status==='solved'?'盘面已达成':'当前盘面无解');return;}
     hintQuota[kind]--;updateHintBadge();
     closeHintPanel();
-    if(kind==='h3'&&performance.now()<h3LockUntil){hintQuota[kind]++;updateHintBadge();toast('等旋转完成');return;}
     performHint(kind,res);
     return;
   }
-  adPending=kind;
   if(AdGateway.isReady())AdGateway.showRewarded(()=>grantAd(kind),()=>toast('未完成广告，未发放提示'));
   else toast('广告暂不可用');
 }
