@@ -16,6 +16,10 @@ cd "$(dirname "$0")"
 cp ../prototype/levels-v1.html www/index.html
 echo "[patch] www/index.html 已同步（$(wc -c < www/index.html) bytes）"
 
+# 1.5) 回填 android assets（cap add 生成的是模板快照，必须 copy 才会把 www 打进 APK）
+npx cap copy android
+echo "[patch] cap copy 完成"
+
 # 2) :app 模块
 if ! grep -q 'buildToolsVersion' android/app/build.gradle; then
   sed -i 's|compileSdk = rootProject.ext.compileSdkVersion|compileSdk = rootProject.ext.compileSdkVersion\n    buildToolsVersion = "36.0.0"|' android/app/build.gradle
