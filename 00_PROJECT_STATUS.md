@@ -5,7 +5,7 @@
 
 ## 一句话现状
 
-星球主题轨道解谜游戏（Web 原型阶段）。核心机制已数学验证，**关卡扩产完成：17 关**（v1 教学 6 关 + v2 双球巩固带 L7-L12 + 三色挑战带 L13-L17），全链路验证通过（BFS 双保险 + 浏览器 17/17 全通关 + 游戏内 solver 全部最优步破关）。**v1.3 已交付**（prototype/levels-v1.html）。打包基建已就绪（GitHub Actions CI 出包 + 真机部署验证过 v1.2 debug APK）。当前焦点：① 用户真机试玩 v1.3 反馈（重点 L12/L16 卡关感、L13 紫球引入回落是否够）；② 外部识图 AI 画面评审（提示词已存档，等回贴）；③ 上架合规项（防沉迷+隐私政策）未实施。
+星球主题轨道解谜游戏（Web 原型阶段）。核心机制已数学验证，**关卡扩产完成：17 关**（v1 教学 6 关 + v2 双球巩固带 L7-L12 + 三色挑战带 L13-L17），全链路验证通过（BFS 双保险 + 浏览器 17/17 全通关 + 游戏内 solver 全部最优步破关）。**v1.3 已交付**（prototype/levels-v1.html）。打包基建已就绪（GitHub Actions CI 出包 + 真机部署验证过 v1.2 debug APK）。**上架合规完成**：legal/PRIVACY_POLICY.md（隐私政策+权限说明+SDK清单三件套，子AI起草、主AI核实修正：TapSDK官方链接实测、TapADN主体艾德蔚纠正、防沉迷设备信息如实披露）；CI 已修复 APK 资源不更新的 bug（cap copy 补丁）。当前焦点：① 用户真机试玩 v1.3 反馈；② 外部识图 AI 画面评审（等回贴）；③ 上架需用户本人操作项：TapTap 开发者认证（实名）+ 替换文档占位符（VERSION_DATE/CONTACT_EMAIL）+ release APK 签名。
 
 ## 项目宪法摘要（全文见 PROJECT_CHARTER.md）
 
