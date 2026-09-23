@@ -1,0 +1,45 @@
+name: Solver Heavy Compute
+on:
+  workflow_dispatch:
+    inputs:
+      job:
+        description: '计算任务'
+        required: true
+        default: 'fullboard-verify'
+      ball_count:
+        description: '球数（满盘验证用）'
+        required: false
+        default: '12'
+      limit:
+        description: '验证关卡数上限'
+        required: false
+        default: '20'
+      depth:
+        description: 'IDA* 深度上限'
+        required: false
+        default: '40'
+
+jobs:
+  solve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 满盘关验证（IDA* 精确 opt）
+        if: inputs.job == 'fullboard-verify'
+        run: |
+          node tools/full_board.js gen ${{ inputs.ball_count }} ${{ inputs.limit }} 7 > /dev/null
+          node tools/_batch_idastar.js /tmp/candidates_full_${{ inputs.ball_count }}.json ${{ inputs.limit }}
+        timeout-minutes: 80
+      - name: 上传结果 artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: solver-results
+          path: |
+            /tmp/candidates_full_*.json
+            /tmp/batch*.log
+          if-no-files-found: ignore
