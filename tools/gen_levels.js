@@ -5,10 +5,9 @@
  * 输出：按最优步分带打印候选（含首步分支/解条数/窗口事件/可达态/样例解），供人工挑关。
  */
 'use strict';
-const { SLOTS, WINDOW_SLOTS, solve } = require('./orbit_core');
-
 const argv = process.argv.slice(2);
 const NBALL = parseInt(argv[0] || '2', 10);
+const { SLOTS, WINDOW_SLOTS, solve } = require(NBALL >= 4 ? './orbit_core_fast' : './orbit_core');
 const SAMPLES = parseInt(argv[1] || '4000', 10);
 const SEED = parseInt(argv[2] || '42', 10);
 const MINOPT = parseInt(argv[3] || '0', 10);
@@ -40,7 +39,8 @@ function randPos(used) {
 
 const PALETTE2 = ['b', 'o'];
 const PALETTE3 = ['b', 'o', 'p']; // p=紫（第三色，v2 引入）
-const palette = NBALL === 2 ? PALETTE2 : PALETTE3;
+const PALETTE4 = ['b', 'o', 'p', 'c']; // c=青（第四色，v3 引入）
+const palette = NBALL === 2 ? PALETTE2 : NBALL === 3 ? PALETTE3 : PALETTE4;
 
 const results = [];
 for (let n = 0; n < SAMPLES; n++) {
@@ -65,7 +65,7 @@ for (let n = 0; n < SAMPLES; n++) {
   if (!ok) continue;
   /* 初始不可与目标重叠（已由 used 分离；但目标可与初始位在异轨同 slot——视觉允许） */
   const L = { name: '', hint: '', balls, targets };
-  const r = solve(L, NBALL === 2 ? 15 : 14);
+  const r = solve(L, NBALL === 2 ? 15 : NBALL === 3 ? 14 : 20);
   if (!r.solvable || r.optimal === 0) continue;
   if (r.optimal < MINOPT || r.optimal > MAXOPT) continue;
   results.push({ balls, targets, optimal: r.optimal, count: r.count, firstBranch: r.firstBranch, gates: r.gateEvents.length, reachable: r.reachable, sample: r.sample });
@@ -74,9 +74,11 @@ for (let n = 0; n < SAMPLES; n++) {
 /* 过滤质量标准（教学/挑战两档）：分支<=2、解条数 1..12 */
 const q = results.filter(x => x.firstBranch >= 1 && x.firstBranch <= 2 && x.count >= 1 && x.count <= 12);
 console.log(`球数 ${NBALL}  采样 ${SAMPLES}  可解 ${results.length}  过滤后候选 ${q.length}\n`);
+/* 候选全量落盘（挑关/回溯复现用） */
+try { require('fs').writeFileSync(`/tmp/candidates_${NBALL}ball.json`, JSON.stringify(q, null, 1)); console.log(`候选已写入 /tmp/candidates_${NBALL}ball.json\n`); } catch (e) { console.log('JSON落盘失败:' + e.message); }
 
 /* 按最优步分带输出 */
-const bands = NBALL === 2 ? [5, 7, 9, 11, 13, 15] : [9, 11, 13];
+const bands = NBALL === 2 ? [5, 7, 9, 11, 13, 15] : NBALL === 3 ? [9, 11, 13] : [8, 10, 12, 14, 16, 18];
 for (let bi = 0; bi < bands.length - 1; bi++) {
   const lo = bands[bi], hi = bands[bi + 1] - 1;
   const band = q.filter(x => x.optimal >= lo && x.optimal <= hi)

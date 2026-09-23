@@ -3,7 +3,7 @@
 <head>
 <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'>
-<title>Star Orbit · 星轨 v1.3</title>
+<title>Star Orbit · 星轨 v1.4</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#06060f;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;-webkit-user-select:none;user-select:none;touch-action:none}
@@ -92,7 +92,7 @@ canvas{display:block;touch-action:none}
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
 let W,H,cx,cy,R,lx,rx,gy,stars=[];
 const SLOTS=12,STEP=30;
-const COLORS={b:{fill:'#4a9eff',rgb:'74,158,255'},o:{fill:'#ff9a3c',rgb:'255,154,60'},p:{fill:'#b76cff',rgb:'183,108,255'}};
+const COLORS={b:{fill:'#4a9eff',rgb:'74,158,255'},o:{fill:'#ff9a3c',rgb:'255,154,60'},p:{fill:'#b76cff',rgb:'183,108,255'},c:{fill:'#3ddba8',rgb:'61,219,168'}};
 function gatePartner(c,s){
   if(c===0){if(s===10)return 8;if(s===2)return 4;return null;}
   if(s===8)return 10;if(s===4)return 2;return null;
@@ -131,7 +131,33 @@ const LEVELS=[
   {name:'第16关 · 轨道边际',hint:'组合技：回顾前面每一关的技巧',optimal:13,
    balls:[{color:'b',pos:[null,1]},{color:'o',pos:[1,null]},{color:'p',pos:[7,null]}],targets:[{ring:1,slot:11,color:'b'},{ring:0,slot:0,color:'o'},{ring:1,slot:0,color:'p'}]},
   {name:'第17关 · 大合流',hint:'最终考验：三星归位',optimal:14,
-   balls:[{color:'b',pos:[8,null]},{color:'o',pos:[null,0]},{color:'p',pos:[null,11]}],targets:[{ring:1,slot:5,color:'b'},{ring:1,slot:1,color:'o'},{ring:0,slot:9,color:'p'}]}
+   balls:[{color:'b',pos:[8,null]},{color:'o',pos:[null,0]},{color:'p',pos:[null,11]}],targets:[{ring:1,slot:5,color:'b'},{ring:1,slot:1,color:'o'},{ring:0,slot:9,color:'p'}]},
+  {name:'第18关 · 青蓝初见',hint:'青星登场！四颗星都要回家，先安顿新来的',optimal:11,
+   balls:[{color:'b',pos:[null,7]},{color:'o',pos:[10,8]},{color:'p',pos:[3,null]},{color:'c',pos:[1,null]}],targets:[{ring:1,slot:2,color:'b'},{ring:0,slot:4,color:'o'},{ring:0,slot:9,color:'p'},{ring:1,slot:11,color:'c'}]},
+  {name:'第19关 · 四星列阵',hint:'四颗星顺序很重要，别让它们互相挡路',optimal:12,
+   balls:[{color:'b',pos:[9,null]},{color:'o',pos:[null,5]},{color:'p',pos:[null,6]},{color:'c',pos:[11,null]}],targets:[{ring:0,slot:8,color:'b'},{ring:1,slot:0,color:'o'},{ring:0,slot:0,color:'p'},{ring:1,slot:10,color:'c'}]},
+  {name:'第20关 · 轨道织网',hint:'窗口可以一用再用，每次经过都算数',optimal:13,
+   balls:[{color:'b',pos:[null,7]},{color:'o',pos:[3,null]},{color:'p',pos:[null,5]},{color:'c',pos:[9,null]}],targets:[{ring:1,slot:6,color:'b'},{ring:0,slot:1,color:'o'},{ring:0,slot:4,color:'p'},{ring:1,slot:0,color:'c'}]},
+  {name:'第21关 · 双窗借力',hint:'两个引力窗口，配合使用',optimal:14,
+   balls:[{color:'b',pos:[9,null]},{color:'o',pos:[null,5]},{color:'p',pos:[6,null]},{color:'c',pos:[null,7]}],targets:[{ring:1,slot:2,color:'b'},{ring:0,slot:0,color:'o'},{ring:0,slot:3,color:'p'},{ring:1,slot:0,color:'c'}]},
+  {name:'第22关 · 星序轮转',hint:'先想清楚谁先谁后',optimal:15,
+   balls:[{color:'b',pos:[4,null]},{color:'o',pos:[null,2]},{color:'p',pos:[null,10]},{color:'c',pos:[7,null]}],targets:[{ring:0,slot:2,color:'b'},{ring:1,slot:6,color:'o'},{ring:0,slot:4,color:'p'},{ring:1,slot:1,color:'c'}]},
+  {name:'第23关 · 四重奏鸣',hint:'四星小考：综合运用前面所学',optimal:15,
+   balls:[{color:'b',pos:[1,null]},{color:'o',pos:[null,2]},{color:'p',pos:[4,null]},{color:'c',pos:[0,null]}],targets:[{ring:1,slot:0,color:'b'},{ring:1,slot:3,color:'o'},{ring:0,slot:0,color:'p'},{ring:1,slot:6,color:'c'}]},
+  {name:'第24关 · 窗口接力',hint:'窗口接力：一次转移为下一次铺路',optimal:15,
+   balls:[{color:'b',pos:[6,null]},{color:'o',pos:[null,1]},{color:'p',pos:[null,11]},{color:'c',pos:[2,null]}],targets:[{ring:1,slot:10,color:'b'},{ring:1,slot:0,color:'o'},{ring:0,slot:8,color:'p'},{ring:1,slot:7,color:'c'}]},
+  {name:'第25关 · 连环归位',hint:'连锁归位：一颗星的到位会带动下一颗',optimal:16,
+   balls:[{color:'b',pos:[null,9]},{color:'o',pos:[null,0]},{color:'p',pos:[null,10]},{color:'c',pos:[null,11]}],targets:[{ring:0,slot:11,color:'b'},{ring:0,slot:7,color:'o'},{ring:1,slot:6,color:'p'},{ring:1,slot:11,color:'c'}]},
+  {name:'第26关 · 星迷航线',hint:'路只有一条，转错就得回头',optimal:16,
+   balls:[{color:'b',pos:[null,9]},{color:'o',pos:[6,null]},{color:'p',pos:[10,null]},{color:'c',pos:[null,4]}],targets:[{ring:0,slot:3,color:'b'},{ring:1,slot:1,color:'o'},{ring:1,slot:5,color:'p'},{ring:0,slot:11,color:'c'}]},
+  {name:'第27关 · 唯一轨道',hint:'解法接近唯一，考验你的规划',optimal:17,
+   balls:[{color:'b',pos:[null,10]},{color:'o',pos:[null,11]},{color:'p',pos:[null,7]},{color:'c',pos:[null,3]}],targets:[{ring:0,slot:3,color:'b'},{ring:0,slot:7,color:'o'},{ring:1,slot:2,color:'p'},{ring:0,slot:9,color:'c'}]},
+  {name:'第28关 · 引力长廊',hint:'长链规划：目光放远三步',optimal:17,
+   balls:[{color:'b',pos:[8,null]},{color:'o',pos:[4,null]},{color:'p',pos:[0,null]},{color:'c',pos:[null,11]}],targets:[{ring:0,slot:9,color:'b'},{ring:1,slot:1,color:'o'},{ring:1,slot:0,color:'p'},{ring:0,slot:3,color:'c'}]},
+  {name:'第29关 · 静星时刻',hint:'休息关：稳步完成就是胜利',optimal:13,
+   balls:[{color:'b',pos:[null,5]},{color:'o',pos:[8,null]},{color:'p',pos:[null,2]},{color:'c',pos:[10,null]}],targets:[{ring:0,slot:1,color:'b'},{ring:1,slot:7,color:'o'},{ring:0,slot:5,color:'p'},{ring:1,slot:10,color:'c'}]},
+  {name:'第30关 · 终极归位',hint:'终局：四星全部归位，展示你学会的一切',optimal:18,
+   balls:[{color:'b',pos:[1,null]},{color:'o',pos:[3,null]},{color:'p',pos:[4,null]},{color:'c',pos:[9,null]}],targets:[{ring:1,slot:6,color:'b'},{ring:0,slot:11,color:'o'},{ring:1,slot:2,color:'p'},{ring:0,slot:0,color:'c'}]}
 ];
 /* ---- 进度存档 ---- */
 const SAVE_KEY='starorbit_progress_v1';
@@ -374,6 +400,8 @@ function solveHint(){
   const seen=new Set([keyOf(start)]);
   let frontier=[{st:start,first:null,d:0}];
   let visited=1;
+  /* 上限 30 万态：4 球可达空间实测 ~16 万，全部 v3 关卡在帽内；溢出诚实返回不假报 */
+  const CAP=300000;
   while(frontier.length){
     const nxt=[];
     for(const node of frontier){
@@ -387,11 +415,11 @@ function solveHint(){
           const first=node.first||{ring:ci,dir};
           if(genWin(def,st))return {status:'ok',ring:first.ring,dir:first.dir,dist:node.d+1,visited};
           nxt.push({st,first,d:node.d+1});
+          if(visited>CAP)return {status:'overflow',ring:null,dir:0,dist:-1,visited};
         }
       }
     }
     frontier=nxt;
-    if(visited>50000)return {status:'overflow',ring:null,dir:0,dist:-1,visited};
   }
   return {status:'unsolvable',ring:null,dir:0,dist:-1,visited};
 }
