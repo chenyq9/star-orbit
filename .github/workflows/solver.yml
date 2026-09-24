@@ -32,7 +32,7 @@ jobs:
         if: inputs.job == 'fullboard-verify'
         run: |
           node tools/full_board.js gen ${{ inputs.ball_count }} ${{ inputs.limit }} 7 > /dev/null
-          node tools/_batch_idastar.js /tmp/candidates_full_${{ inputs.ball_count }}.json ${{ inputs.limit }}
+          node tools/_batch_idastar.js /tmp/candidates_full_${{ inputs.ball_count }}.json ${{ inputs.limit }} 2>&1 | tee /tmp/batch_${{ inputs.ball_count }}ball.log
         timeout-minutes: 80
       - name: 上传结果 artifact
         if: always()
