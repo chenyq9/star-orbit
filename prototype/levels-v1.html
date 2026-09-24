@@ -210,7 +210,7 @@ function resize(){
   for(let i=0;i<90;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.3,a:Math.random()*.4+.15});
 }
 addEventListener('resize',resize);resize();
-function clampLevel(i){return Math.max(0,Math.min(i,Math.min(LEVELS.length-1,progress.unlocked-1)));}
+function clampLevel(i){return Math.max(0,Math.min(i,LEVELS.length-1));}
 function loadLevel(i){
   lvlIdx=clampLevel(i);
   const L=LEVELS[lvlIdx];
@@ -234,7 +234,7 @@ function updateHud(){
 }
 function updateNav(){
   const next=document.getElementById('next');
-  if(lvlIdx>=Math.min(LEVELS.length-1,progress.unlocked-1))next.classList.add('locked');
+  if(lvlIdx>=LEVELS.length-1)next.classList.add('locked');
   else next.classList.remove('locked');
 }
 function renderBest(){
