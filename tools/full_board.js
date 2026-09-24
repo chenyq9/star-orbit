@@ -35,7 +35,7 @@ function mulberry32(a) {
 }
 
 /* 满盘关生成：从目标布局回退 k 步得初始态（每步避开碰撞） */
-function genFullBoard(NBALL, SAMPLES, SEED) {
+function genFullBoard(NBALL, SAMPLES, SEED, K) { /* K=回退步数(显式传入,2026-09-24修:此前内部随机k从未接收入参) */
   const rnd = mulberry32(SEED);
   const ri = n => Math.floor(rnd() * n);
   const results = [];
@@ -55,21 +55,24 @@ function genFullBoard(NBALL, SAMPLES, SEED) {
     Rs.forEach(s => goal.push({ color: 'o', pos: [null, s] }));
     goal.push({ color: 'p', pos: [10, 8] });
     goal.push({ color: 'p', pos: [2, 4] });
-    /* 回退 k 步（k 按 NBALL 调） */
-    const k = 8 + ri(NBALL >= 10 ? 14 : 10);
+    /* 回退 K 步（显式K；防抵消：禁同环反向抵消；retry>50样本作废防死循环；path落盘供重演验证） */
+    const k = K;
     let state = goal.map(b => b.pos.slice());
+    let prev = null;
+    const path = [];
+    let retry = 0;
     let valid = true;
     for (let step = 0; step < k; step++) {
       const ci = ri(2), dir = rnd() < 0.5 ? 1 : -1;
+      if (prev !== null && prev[0] === ci && prev[1] === -dir) { retry++; if (retry > 50) { valid = false; break; } step--; continue; }
       const ns = simStep(state, ci, dir);
-      if (hasDup(ns)) { step--; continue; }
-      state = ns;
-      if (step > 200) { valid = false; break; }
+      if (hasDup(ns)) { retry++; if (retry > 50) { valid = false; break; } step--; continue; }
+      state = ns; prev = [ci, dir]; path.push([ci, dir]); retry = 0;
     }
     if (!valid) { stuckCount++; continue; }
     /* 同色多球：isWin 语义=任一同色球匹配该目标（已按颜色匹配，天然支持） */
     const targets = goal.map((b, i) => ({ ring: b.pos[0] !== null ? 0 : 1, slot: b.pos[0] !== null ? b.pos[0] : b.pos[1], color: b.color }));
-    results.push({ balls: goal.map((b, i) => ({ color: b.color, pos: state[i] })), targets, k });
+    results.push({ balls: goal.map((b, i) => ({ color: b.color, pos: state[i] })), targets, k, path });
   }
   return { results, stuckCount };
 }

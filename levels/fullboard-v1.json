@@ -1,9 +1,139 @@
 [
  {
   "id": 31,
-  "declaredOptimal": 10,
   "note": "回退上界,精确opt待云端验证",
   "balls": [
+   {
+    "color": "b",
+    "pos": [
+     3,
+     null
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     7,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     null,
+     2
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     null,
+     11
+    ]
+   },
+   {
+    "color": "p",
+    "pos": [
+     null,
+     3
+    ]
+   },
+   {
+    "color": "p",
+    "pos": [
+     5,
+     null
+    ]
+   }
+  ],
+  "targets": [
+   {
+    "ring": 0,
+    "slot": 1,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 4,
+    "color": "b"
+   },
+   {
+    "ring": 1,
+    "slot": 5,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 2,
+    "color": "o"
+   },
+   {
+    "ring": 0,
+    "slot": 10,
+    "color": "p"
+   },
+   {
+    "ring": 0,
+    "slot": 2,
+    "color": "p"
+   }
+  ],
+  "k": 10,
+  "path": [
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ]
+  ],
+  "declaredOptimal": 10
+ },
+ {
+  "id": 32,
+  "note": "回退上界,精确opt待云端验证",
+  "balls": [
+   {
+    "color": "b",
+    "pos": [
+     1,
+     null
+    ]
+   },
    {
     "color": "b",
     "pos": [
@@ -12,9 +142,148 @@
     ]
    },
    {
+    "color": "o",
+    "pos": [
+     null,
+     3
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     0,
+     null
+    ]
+   },
+   {
+    "color": "p",
+    "pos": [
+     4,
+     null
+    ]
+   },
+   {
+    "color": "p",
+    "pos": [
+     2,
+     4
+    ]
+   }
+  ],
+  "targets": [
+   {
+    "ring": 0,
+    "slot": 7,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 8,
+    "color": "b"
+   },
+   {
+    "ring": 1,
+    "slot": 7,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 6,
+    "color": "o"
+   },
+   {
+    "ring": 0,
+    "slot": 10,
+    "color": "p"
+   },
+   {
+    "ring": 0,
+    "slot": 2,
+    "color": "p"
+   }
+  ],
+  "k": 12,
+  "path": [
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ]
+  ],
+  "declaredOptimal": 12
+ },
+ {
+  "id": 33,
+  "note": "回退上界,精确opt待云端验证",
+  "balls": [
+   {
     "color": "b",
     "pos": [
-     9,
+     0,
+     null
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     null,
+     5
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     null,
+     1
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     8,
      null
     ]
    },
@@ -29,7 +298,7 @@
     "color": "o",
     "pos": [
      null,
-     9
+     10
     ]
    },
    {
@@ -50,89 +319,7 @@
   "targets": [
    {
     "ring": 0,
-    "slot": 3,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 4,
-    "color": "b"
-   },
-   {
-    "ring": 1,
-    "slot": 2,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 6,
-    "color": "o"
-   },
-   {
-    "ring": 0,
-    "slot": 10,
-    "color": "p"
-   },
-   {
-    "ring": 0,
-    "slot": 2,
-    "color": "p"
-   }
-  ],
-  "k": 15
- },
- {
-  "id": 32,
-  "declaredOptimal": 12,
-  "note": "回退上界,精确opt待云端验证",
-  "balls": [
-   {
-    "color": "b",
-    "pos": [
-     8,
-     null
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     11,
-     null
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     null,
-     11
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     null,
-     3
-    ]
-   },
-   {
-    "color": "p",
-    "pos": [
-     null,
-     5
-    ]
-   },
-   {
-    "color": "p",
-    "pos": [
-     5,
-     null
-    ]
-   }
-  ],
-  "targets": [
-   {
-    "ring": 0,
-    "slot": 5,
+    "slot": 7,
     "color": "b"
    },
    {
@@ -141,8 +328,18 @@
     "color": "b"
    },
    {
+    "ring": 0,
+    "slot": 3,
+    "color": "b"
+   },
+   {
     "ring": 1,
-    "slot": 9,
+    "slot": 5,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 3,
     "color": "o"
    },
    {
@@ -161,13 +358,70 @@
     "color": "p"
    }
   ],
-  "k": 15
+  "k": 12,
+  "path": [
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    -1
+   ]
+  ],
+  "declaredOptimal": 12
  },
  {
-  "id": 33,
-  "declaredOptimal": 12,
+  "id": 34,
   "note": "回退上界,精确opt待云端验证",
   "balls": [
+   {
+    "color": "b",
+    "pos": [
+     4,
+     null
+    ]
+   },
    {
     "color": "b",
     "pos": [
@@ -178,49 +432,42 @@
    {
     "color": "b",
     "pos": [
-     8,
-     null
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     6,
+     1,
      null
     ]
    },
    {
     "color": "o",
     "pos": [
-     null,
-     5
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     5,
+     11,
      null
     ]
    },
    {
     "color": "o",
     "pos": [
-     null,
-     6
+     9,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     10,
+     8
     ]
    },
    {
     "color": "p",
     "pos": [
      null,
-     0
+     7
     ]
    },
    {
     "color": "p",
     "pos": [
-     0,
+     7,
      null
     ]
    }
@@ -228,18 +475,23 @@
   "targets": [
    {
     "ring": 0,
+    "slot": 9,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 8,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 6,
+    "color": "b"
+   },
+   {
+    "ring": 1,
     "slot": 0,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 5,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 3,
-    "color": "b"
+    "color": "o"
    },
    {
     "ring": 1,
@@ -248,12 +500,7 @@
    },
    {
     "ring": 1,
-    "slot": 3,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 2,
+    "slot": 9,
     "color": "o"
    },
    {
@@ -267,18 +514,76 @@
     "color": "p"
    }
   ],
-  "k": 13
+  "k": 14,
+  "path": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ]
+  ],
+  "declaredOptimal": 14
  },
  {
-  "id": 34,
-  "declaredOptimal": 14,
+  "id": 35,
   "note": "回退上界,精确opt待云端验证",
   "balls": [
    {
     "color": "b",
     "pos": [
-     10,
-     8
+     null,
+     5
     ]
    },
    {
@@ -291,8 +596,224 @@
    {
     "color": "b",
     "pos": [
+     10,
+     8
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     4,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     2,
+     4
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     11,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     7,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
      null,
-     5
+     2
+    ]
+   },
+   {
+    "color": "p",
+    "pos": [
+     1,
+     null
+    ]
+   },
+   {
+    "color": "p",
+    "pos": [
+     5,
+     null
+    ]
+   }
+  ],
+  "targets": [
+   {
+    "ring": 0,
+    "slot": 3,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 6,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 7,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 1,
+    "color": "b"
+   },
+   {
+    "ring": 1,
+    "slot": 9,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 6,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 7,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 1,
+    "color": "o"
+   },
+   {
+    "ring": 0,
+    "slot": 10,
+    "color": "p"
+   },
+   {
+    "ring": 0,
+    "slot": 2,
+    "color": "p"
+   }
+  ],
+  "k": 14,
+  "path": [
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ]
+  ],
+  "declaredOptimal": 14
+ },
+ {
+  "id": 36,
+  "note": "回退上界,精确opt待云端验证",
+  "balls": [
+   {
+    "color": "b",
+    "pos": [
+     3,
+     null
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     5,
+     null
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     null,
+     1
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     2,
+     4
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     null,
+     2
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     null,
+     6
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     null,
+     9
     ]
    },
    {
@@ -303,30 +824,16 @@
     ]
    },
    {
-    "color": "o",
+    "color": "p",
     "pos": [
-     null,
-     7
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     null,
-     10
+     4,
+     null
     ]
    },
    {
     "color": "p",
     "pos": [
-     2,
-     4
-    ]
-   },
-   {
-    "color": "p",
-    "pos": [
-     6,
+     8,
      null
     ]
    }
@@ -334,12 +841,12 @@
   "targets": [
    {
     "ring": 0,
-    "slot": 6,
+    "slot": 9,
     "color": "b"
    },
    {
     "ring": 0,
-    "slot": 5,
+    "slot": 11,
     "color": "b"
    },
    {
@@ -348,8 +855,18 @@
     "color": "b"
    },
    {
+    "ring": 0,
+    "slot": 5,
+    "color": "b"
+   },
+   {
     "ring": 1,
     "slot": 3,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 7,
     "color": "o"
    },
    {
@@ -359,7 +876,7 @@
    },
    {
     "ring": 1,
-    "slot": 2,
+    "slot": 1,
     "color": "o"
    },
    {
@@ -373,38 +890,132 @@
     "color": "p"
    }
   ],
-  "k": 8
+  "k": 16,
+  "path": [
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ]
+  ],
+  "declaredOptimal": 16
  },
  {
-  "id": 35,
-  "declaredOptimal": 14,
+  "id": 37,
   "note": "回退上界,精确opt待云端验证",
   "balls": [
    {
     "color": "b",
     "pos": [
-     null,
-     6
+     8,
+     null
     ]
    },
    {
     "color": "b",
     "pos": [
-     10,
-     8
+     5,
+     null
     ]
    },
    {
     "color": "b",
+    "pos": [
+     4,
+     null
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     null,
+     5
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     3,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     1,
+     null
+    ]
+   },
+   {
+    "color": "o",
     "pos": [
      null,
      10
     ]
    },
    {
-    "color": "b",
+    "color": "o",
     "pos": [
-     7,
+     11,
      null
     ]
    },
@@ -417,416 +1028,222 @@
    },
    {
     "color": "o",
+    "pos": [
+     7,
+     null
+    ]
+   },
+   {
+    "color": "p",
+    "pos": [
+     6,
+     null
+    ]
+   },
+   {
+    "color": "p",
+    "pos": [
+     2,
+     4
+    ]
+   }
+  ],
+  "targets": [
+   {
+    "ring": 0,
+    "slot": 11,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 9,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 7,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 1,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 6,
+    "color": "b"
+   },
+   {
+    "ring": 1,
+    "slot": 5,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 1,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 3,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 10,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 7,
+    "color": "o"
+   },
+   {
+    "ring": 0,
+    "slot": 10,
+    "color": "p"
+   },
+   {
+    "ring": 0,
+    "slot": 2,
+    "color": "p"
+   }
+  ],
+  "k": 16,
+  "path": [
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ]
+  ],
+  "declaredOptimal": 16
+ },
+ {
+  "id": 38,
+  "note": "回退上界,精确opt待云端验证",
+  "balls": [
+   {
+    "color": "b",
+    "pos": [
+     null,
+     6
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     9,
+     null
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     1,
+     null
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     8,
+     null
+    ]
+   },
+   {
+    "color": "b",
     "pos": [
      null,
      3
     ]
    },
    {
-    "color": "o",
-    "pos": [
-     null,
-     0
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     null,
-     2
-    ]
-   },
-   {
-    "color": "p",
-    "pos": [
-     11,
-     null
-    ]
-   },
-   {
-    "color": "p",
-    "pos": [
-     3,
-     null
-    ]
-   }
-  ],
-  "targets": [
-   {
-    "ring": 0,
-    "slot": 1,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 8,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 9,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 6,
-    "color": "b"
-   },
-   {
-    "ring": 1,
-    "slot": 6,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 2,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 10,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 0,
-    "color": "o"
-   },
-   {
-    "ring": 0,
-    "slot": 10,
-    "color": "p"
-   },
-   {
-    "ring": 0,
-    "slot": 2,
-    "color": "p"
-   }
-  ],
-  "k": 9
- },
- {
-  "id": 36,
-  "declaredOptimal": 16,
-  "note": "回退上界,精确opt待云端验证",
-  "balls": [
-   {
     "color": "b",
-    "pos": [
-     7,
-     null
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     2,
-     4
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     5,
-     null
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     6,
-     null
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     null,
-     0
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     null,
-     5
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     null,
-     11
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     8,
-     null
-    ]
-   },
-   {
-    "color": "p",
-    "pos": [
-     null,
-     2
-    ]
-   },
-   {
-    "color": "p",
-    "pos": [
-     null,
-     9
-    ]
-   }
-  ],
-  "targets": [
-   {
-    "ring": 0,
-    "slot": 9,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 4,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 7,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 8,
-    "color": "b"
-   },
-   {
-    "ring": 1,
-    "slot": 6,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 0,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 7,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 2,
-    "color": "o"
-   },
-   {
-    "ring": 0,
-    "slot": 10,
-    "color": "p"
-   },
-   {
-    "ring": 0,
-    "slot": 2,
-    "color": "p"
-   }
-  ],
-  "k": 16
- },
- {
-  "id": 37,
-  "declaredOptimal": 16,
-  "note": "回退上界,精确opt待云端验证",
-  "balls": [
-   {
-    "color": "b",
-    "pos": [
-     8,
-     null
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     0,
-     null
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     11,
-     null
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     10,
-     8
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     5,
-     null
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     2,
-     4
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     6,
-     null
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     null,
-     9
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     null,
-     5
-    ]
-   },
-   {
-    "color": "o",
-    "pos": [
-     null,
-     2
-    ]
-   },
-   {
-    "color": "p",
     "pos": [
      null,
      10
     ]
    },
    {
-    "color": "p",
+    "color": "b",
     "pos": [
      null,
-     6
+     0
     ]
-   }
-  ],
-  "targets": [
-   {
-    "ring": 0,
-    "slot": 3,
-    "color": "b"
    },
    {
-    "ring": 0,
-    "slot": 7,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 0,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 5,
-    "color": "b"
-   },
-   {
-    "ring": 0,
-    "slot": 1,
-    "color": "b"
-   },
-   {
-    "ring": 1,
-    "slot": 10,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 6,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 7,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 3,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 0,
-    "color": "o"
-   },
-   {
-    "ring": 0,
-    "slot": 10,
-    "color": "p"
-   },
-   {
-    "ring": 0,
-    "slot": 2,
-    "color": "p"
-   }
-  ],
-  "k": 19
- },
- {
-  "id": 38,
-  "declaredOptimal": 18,
-  "note": "回退上界,精确opt待云端验证",
-  "balls": [
-   {
-    "color": "b",
+    "color": "o",
     "pos": [
      2,
      4
     ]
    },
    {
-    "color": "b",
-    "pos": [
-     6,
-     null
-    ]
-   },
-   {
-    "color": "b",
+    "color": "o",
     "pos": [
      null,
      7
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     null,
-     6
-    ]
-   },
-   {
-    "color": "b",
-    "pos": [
-     11,
-     null
     ]
    },
    {
@@ -840,59 +1257,59 @@
     "color": "o",
     "pos": [
      null,
-     0
+     5
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     11,
+     null
     ]
    },
    {
     "color": "o",
     "pos": [
      null,
-     11
+     2
     ]
    },
    {
     "color": "o",
+    "pos": [
+     10,
+     8
+    ]
+   },
+   {
+    "color": "p",
     "pos": [
      0,
      null
     ]
    },
    {
-    "color": "o",
-    "pos": [
-     null,
-     9
-    ]
-   },
-   {
     "color": "p",
     "pos": [
-     7,
+     4,
      null
-    ]
-   },
-   {
-    "color": "p",
-    "pos": [
-     null,
-     10
     ]
    }
   ],
   "targets": [
    {
     "ring": 0,
-    "slot": 9,
+    "slot": 4,
     "color": "b"
    },
    {
     "ring": 0,
-    "slot": 1,
+    "slot": 11,
     "color": "b"
    },
    {
     "ring": 0,
-    "slot": 7,
+    "slot": 3,
     "color": "b"
    },
    {
@@ -902,17 +1319,27 @@
    },
    {
     "ring": 0,
-    "slot": 6,
+    "slot": 9,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 0,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 1,
     "color": "b"
    },
    {
     "ring": 1,
-    "slot": 7,
+    "slot": 10,
     "color": "o"
    },
    {
     "ring": 1,
-    "slot": 6,
+    "slot": 0,
     "color": "o"
    },
    {
@@ -922,12 +1349,22 @@
    },
    {
     "ring": 1,
-    "slot": 2,
+    "slot": 9,
     "color": "o"
    },
    {
     "ring": 1,
-    "slot": 3,
+    "slot": 11,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 6,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 2,
     "color": "o"
    },
    {
@@ -941,18 +1378,99 @@
     "color": "p"
    }
   ],
-  "k": 17
+  "k": 18,
+  "path": [
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ]
+  ],
+  "declaredOptimal": 18
  },
  {
   "id": 39,
-  "declaredOptimal": 20,
   "note": "回退上界,精确opt待云端验证",
   "balls": [
    {
     "color": "b",
     "pos": [
-     10,
-     8
+     null,
+     2
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     6,
+     null
     ]
    },
    {
@@ -966,14 +1484,14 @@
     "color": "b",
     "pos": [
      null,
-     7
+     6
     ]
    },
    {
     "color": "b",
     "pos": [
-     5,
-     null
+     2,
+     4
     ]
    },
    {
@@ -984,17 +1502,66 @@
     ]
    },
    {
-    "color": "o",
+    "color": "b",
     "pos": [
      null,
-     5
+     3
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     null,
+     7
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     10,
+     8
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     0,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     1,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     9,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     8,
+     null
     ]
    },
    {
     "color": "o",
     "pos": [
      null,
-     10
+     0
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     null,
+     1
     ]
    },
    {
@@ -1007,29 +1574,29 @@
    {
     "color": "o",
     "pos": [
-     null,
-     2
+     11,
+     null
     ]
    },
    {
     "color": "o",
     "pos": [
+     7,
+     null
+    ]
+   },
+   {
+    "color": "p",
+    "pos": [
      null,
-     0
+     9
     ]
    },
    {
     "color": "p",
     "pos": [
-     9,
-     null
-    ]
-   },
-   {
-    "color": "p",
-    "pos": [
-     1,
-     null
+     null,
+     5
     ]
    }
   ],
@@ -1041,12 +1608,12 @@
    },
    {
     "ring": 0,
-    "slot": 5,
+    "slot": 6,
     "color": "b"
    },
    {
     "ring": 0,
-    "slot": 0,
+    "slot": 3,
     "color": "b"
    },
    {
@@ -1056,22 +1623,52 @@
    },
    {
     "ring": 0,
-    "slot": 6,
+    "slot": 1,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 4,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 0,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 8,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 9,
     "color": "b"
    },
    {
     "ring": 1,
+    "slot": 5,
+    "color": "o"
+   },
+   {
+    "ring": 1,
     "slot": 6,
     "color": "o"
    },
    {
     "ring": 1,
-    "slot": 11,
+    "slot": 10,
     "color": "o"
    },
    {
     "ring": 1,
-    "slot": 0,
+    "slot": 9,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 2,
     "color": "o"
    },
    {
@@ -1085,6 +1682,16 @@
     "color": "o"
    },
    {
+    "ring": 1,
+    "slot": 7,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 11,
+    "color": "o"
+   },
+   {
     "ring": 0,
     "slot": 10,
     "color": "p"
@@ -1095,32 +1702,121 @@
     "color": "p"
    }
   ],
-  "k": 19
+  "k": 20,
+  "path": [
+   [
+    0,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ]
+  ],
+  "declaredOptimal": 20
  },
  {
   "id": 40,
-  "declaredOptimal": 22,
   "note": "回退上界,精确opt待云端验证",
   "balls": [
    {
     "color": "b",
     "pos": [
-     10,
-     8
+     null,
+     1
     ]
    },
    {
     "color": "b",
     "pos": [
-     4,
+     3,
      null
     ]
    },
    {
     "color": "b",
     "pos": [
-     0,
+     7,
      null
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     null,
+     5
     ]
    },
    {
@@ -1133,12 +1829,33 @@
    {
     "color": "b",
     "pos": [
-     null,
-     9
+     11,
+     null
     ]
    },
    {
-    "color": "o",
+    "color": "b",
+    "pos": [
+     6,
+     null
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     null,
+     7
+    ]
+   },
+   {
+    "color": "b",
+    "pos": [
+     null,
+     6
+    ]
+   },
+   {
+    "color": "b",
     "pos": [
      null,
      3
@@ -1147,22 +1864,50 @@
    {
     "color": "o",
     "pos": [
+     8,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     0,
+     null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
      null,
-     10
+     2
     ]
    },
    {
     "color": "o",
     "pos": [
-     11,
+     4,
      null
     ]
    },
    {
     "color": "o",
     "pos": [
-     5,
+     10,
+     8
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     1,
      null
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     null,
+     11
     ]
    },
    {
@@ -1173,24 +1918,58 @@
     ]
    },
    {
-    "color": "p",
+    "color": "o",
     "pos": [
      null,
-     6
+     9
+    ]
+   },
+   {
+    "color": "o",
+    "pos": [
+     null,
+     10
     ]
    },
    {
     "color": "p",
     "pos": [
-     null,
-     2
+     5,
+     null
+    ]
+   },
+   {
+    "color": "p",
+    "pos": [
+     9,
+     null
     ]
    }
   ],
   "targets": [
    {
     "ring": 0,
-    "slot": 8,
+    "slot": 11,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 3,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 6,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 4,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 7,
     "color": "b"
    },
    {
@@ -1205,12 +1984,17 @@
    },
    {
     "ring": 0,
-    "slot": 0,
+    "slot": 8,
     "color": "b"
    },
    {
     "ring": 0,
-    "slot": 7,
+    "slot": 5,
+    "color": "b"
+   },
+   {
+    "ring": 0,
+    "slot": 0,
     "color": "b"
    },
    {
@@ -1220,12 +2004,7 @@
    },
    {
     "ring": 1,
-    "slot": 0,
-    "color": "o"
-   },
-   {
-    "ring": 1,
-    "slot": 11,
+    "slot": 2,
     "color": "o"
    },
    {
@@ -1235,7 +2014,37 @@
    },
    {
     "ring": 1,
-    "slot": 2,
+    "slot": 9,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 10,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 3,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 0,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 1,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 7,
+    "color": "o"
+   },
+   {
+    "ring": 1,
+    "slot": 11,
     "color": "o"
    },
    {
@@ -1249,6 +2058,97 @@
     "color": "p"
    }
   ],
-  "k": 13
+  "k": 22,
+  "path": [
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    -1
+   ],
+   [
+    0,
+    -1
+   ],
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    1
+   ]
+  ],
+  "declaredOptimal": 22
  }
 ]

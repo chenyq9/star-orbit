@@ -2,7 +2,7 @@
 /* 满盘关卡生产器 v1（四章 L31-40 用）
  * 核心：回退法构造性保证可解（回退k步必有≤k步解，数学免验证）
  *       每关 opt 声明值 = 回退步数k（合法上界；精确opt待更强启发式/并行矩阵后再定，标注待验证）
- * 输出：levels/fullboard-v1.json（10关：6→6→8→8→10→10→12→12→12→12 球阶梯）
+ * 输出：fourball/fullboard-v1.json（10关：6→6→8→8→10→10→12→16→20→22 球阶梯，2026-09-24 22球完全体修正）
  * 用法：node tools/pick_fullboard.js
  */
 'use strict';
@@ -19,10 +19,10 @@ const REQS = [
   { id: 34, n: 8,  k: 14 },
   { id: 35, n: 10, k: 14 },  // 十球带
   { id: 36, n: 10, k: 16 },
-  { id: 37, n: 12, k: 16 },  // 十二球带（circle.html 完全体登场）
-  { id: 38, n: 12, k: 18 },
-  { id: 39, n: 12, k: 20 },
-  { id: 40, n: 12, k: 22 },  // 四章终局：最大错位满盘复位
+  { id: 37, n: 12, k: 16 },  // 十二球带（用户字面指示关）
+  { id: 38, n: 16, k: 18 },  // 修正2026-09-24：circle.html完全体阶梯（原12球终点是半盘错误）
+  { id: 39, n: 20, k: 20 },
+  { id: 40, n: 22, k: 22 },  // 四章终局：circle.html 完全体22球真满盘（10b+10o+2p）
 ];
 function ringDist(a, b) { const d = Math.abs(a - b) % 12; return Math.min(d, 12 - d); }
 function misplacement(lv) {
@@ -40,11 +40,11 @@ function misplacement(lv) {
 const picked = [];
 for (const req of REQS) {
   /* 每关生成50个候选（本地秒级——gen是回退法，无搜索），挑错位度最高的 */
-  const { results } = genFullBoard(req.n, 50, 1000 + req.id);
+  const { results } = genFullBoard(req.n, 50, 1000 + req.id, req.k);
   results.sort((a, b) => misplacement(b) - misplacement(a));
   const best = results[0];
-  picked.push({ id: req.id, declaredOptimal: req.k, note: '回退上界,精确opt待云端验证', ...best });
+  picked.push({ id: req.id, note: '回退上界,精确opt待云端验证', ...best, declaredOptimal: best.k, path: best.path });
   console.log(`L${req.id}: ${req.n}球 k=${req.k} 错位度=${misplacement(best)} balls=${best.balls.length}`);
 }
-fs.writeFileSync('/tmp/star-orbit/levels/fullboard-v1.json', JSON.stringify(picked, null, 1));
+fs.writeFileSync(__dirname + '/fullboard-v1.json', JSON.stringify(picked, null, 1));
 console.log(`\n10关 → levels/fullboard-v1.json（四章满盘带，opt=回退上界声明）`);
