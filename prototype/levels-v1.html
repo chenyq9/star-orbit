@@ -58,6 +58,7 @@ canvas{display:block;touch-action:none}
 <div id='hud'></div>
 <div id='prev' class='navbtn'>‹</div>
 <div id='restart' class='navbtn'>↺</div>
+<div id='jump' class='navbtn'>⇥</div>
 <div id='next' class='navbtn'>›</div>
 <div id='win'>
   <h2 id='wintitle'>轨道归位 ✔</h2>
@@ -611,6 +612,14 @@ cv.addEventListener('pointercancel',up);
 document.getElementById('prev').addEventListener('click',()=>loadLevel(lvlIdx-1));
 document.getElementById('next').addEventListener('click',()=>loadLevel(lvlIdx+1));
 document.getElementById('restart').addEventListener('click',()=>loadLevel(lvlIdx));
+document.getElementById('jump').addEventListener('click',()=>{
+  const v=prompt('关卡号 1-'+LEVELS.length,'');
+  const n=parseInt(v);
+  if(n>=1&&n<=LEVELS.length){
+    if(n>progress.unlocked){progress.unlocked=n;saveProgress();} /* debug直达：扩解锁不绕clamp（正式版章选界面取代后移除） */
+    loadLevel(n-1);
+  }
+});
 document.getElementById('win').addEventListener('click',()=>{
   loadLevel(lvlIdx===LEVELS.length-1?0:lvlIdx+1);
 });
@@ -621,7 +630,14 @@ document.getElementById('hc3').addEventListener('click',()=>requestHint('h3'));
 document.querySelector('.hpClose').addEventListener('click',closeHintPanel);
 document.getElementById('hintPanel').addEventListener('click',e=>{if(e.target.id==='hintPanel')closeHintPanel();});
 renderBest();
-loadLevel(0);
+(function(){ /* URL hash 直达（debug，与⇥同源）：#L31 直接扩展解锁并进该关 */
+  const h=/^#L(\d+)$/.exec(location.hash);
+  if(h){
+    const n=Math.max(1,Math.min(LEVELS.length,parseInt(h[1])));
+    if(n>progress.unlocked){progress.unlocked=n;saveProgress();}
+    loadLevel(n-1);
+  } else loadLevel(0);
+})();
 (function loop(){draw();requestAnimationFrame(loop);})();
 </script>
 </body>
